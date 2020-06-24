@@ -15,18 +15,32 @@ class ListTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        let indexPath = IndexPath(row: 0, section: 0)
+        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44.0))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        switch section{
+               case 0:
+                   return 1
+               default:
+                   return 5
+               }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "filmCell")!
-        return cell
+        switch indexPath.section{
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell")!
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "filmCell")!
+            return cell
+        }
+
     }
 }

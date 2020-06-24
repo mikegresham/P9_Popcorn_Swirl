@@ -13,7 +13,7 @@ class FilmDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.artworkImageView.image = UIImage.init(named: "placeholder")
+
         overrideUserInterfaceStyle = .dark
         MediaService.getMedia(id: mediaID, completion: { (success, media) in
             if success, let media = media {
@@ -27,31 +27,61 @@ class FilmDetailViewController: UIViewController {
             }
             
         })
- 
-
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.tintColor = UIColor.orange
+        setNavigationBarTransparent()
+        setGradientLayer()
+    }
+    
+    func setNavigationBarTransparent() {
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.backgroundColor = .clear
+    }
+    
+    func setGradientLayer() {
+        let width = backgroundImageView.frame.width
+        let height = backgroundImageView.frame.height
+        let sHeight:CGFloat = 100.0
+
+        
+        let bottomImageGradient = CAGradientLayer()
+        bottomImageGradient.frame = CGRect(x: 0, y: height - sHeight, width: width, height: sHeight)
+        bottomImageGradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        backgroundImageView.layer.insertSublayer(bottomImageGradient, at: 0)
+    }
     var mediaID: Int!
     
     private var media: Media?
     
-    @IBOutlet weak var artworkImageView: UIImageView!
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var bookmarkButton: UIButton!
     @IBOutlet weak var viewedButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var movieTitle: UILabel!
+    @IBOutlet weak var gradientView: UIView!
     
     func populate(media: Media){
-        self.title = media.title
-        self.descriptionLabel.text = media.description
+        self.movieTitle.text = media.title
+        self.descriptionLabel.text = media.overview
         self.bookmarkButton.isSelected = media.bookmark
         self.viewedButton.isSelected = media.viewed
-        
-        if let imageURL = URL(string: media.artworkURL) {
+        let caption = "\(media.yearText) ∙ \(formatRuntime(runtime: media.runtime!))"
+        captionLabel.text = caption
+        self.ratingLabel.text = media.ratingText + " " + media.scoreText
+
+        if let imageURL = URL(string: media.backdropPath!) {
             MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
                 if success, let imageData = imageData,
                     let artwork = UIImage(data: imageData) {
                     DispatchQueue.main.async {
-                        self.artworkImageView.image = artwork
+                        self.backgroundImageView.image = artwork
                     }
                 }
                 
@@ -66,5 +96,14 @@ class FilmDetailViewController: UIViewController {
         })
         alertController.addAction(dismissAction)
         present(alertController, animated: true)
+    }
+    
+    func formatRuntime(runtime: Int) -> String {
+        let hours = runtime/60
+        let minutes = runtime - (hours*60)
+        
+        let hoursplural = hours == 1 ? "" : "s"
+        let minutesplural = minutes == 1 ? "" : "s"
+        return "\(hours) hour\(hoursplural) \(minutes) minute\(minutesplural)"
     }
 }

@@ -11,16 +11,16 @@ import Foundation
 class MediaBrief {
     //Attributes
     var id: Int
-    var artworkURL: String
+    var posterPath: String
     var notes: String?
     var bookmark: Bool
     var viewed: Bool
     
     var artworkData: Data?
     
-    init(id: Int, artworkURL: String, notes: String?, bookmark: Bool, viewed: Bool) {
+    init(id: Int, posterPath: String, notes: String?, bookmark: Bool, viewed: Bool) {
         self.id = id
-        self.artworkURL = artworkURL
+        self.posterPath = posterPath
         self.bookmark = bookmark
         self.viewed = viewed
         if let notes = notes {
@@ -32,15 +32,65 @@ class MediaBrief {
 
 class Media: MediaBrief {
     var title: String
-    var genre: String
-    var description: String
-
+    var backdropPath: String?
+    var overview: String
+    var voteAverage: Double
+    var voteCount: Int
+    var runtime: Int?
+    var releaseDate: String?
     
-    init(id: Int, title: String, artworkURL: String, genre: String, description: String, notes: String?, bookmark: Bool, viewed: Bool){
+    var ratingText: String {
+        let rating = Int(voteAverage)
+        let ratingText = (0..<rating).reduce("") { (acc, _) -> String in
+            return acc + "★"
+        }
+        return ratingText
+    }
+    
+    var scoreText: String {
+        guard ratingText.count > 0 else {
+            return "n/a"
+        }
+        return "\(ratingText.count)/10"
+    }
+    
+    var yearText: String {
+        guard let releaseDate = self.releaseDate, let date = dateFormatter.date(from: releaseDate) else { return "n/a" }
+        return yearFormatter.string(from: date)
+    }
+    
+    init(id: Int, title: String, posterPath: String, backdropPath: String?, overview: String, voteAverage: Double, voteCount: Int, runtime: Int?, releaseDate: String?, notes: String?, bookmark: Bool, viewed: Bool){
         
-        self.genre = genre
-        self.description = description
+        self.backdropPath = backdropPath
+        self.overview = overview
         self.title = title
-        super.init(id: id, artworkURL: artworkURL, notes: notes, bookmark: bookmark, viewed: viewed)
+        self.voteAverage = voteAverage
+        self.voteCount = voteCount
+        self.runtime = runtime
+        self.releaseDate = releaseDate
+        
+        super.init(id: id, posterPath: posterPath, notes: notes, bookmark: bookmark, viewed: viewed)
+    }
+    
+    let yearFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        return dateFormatter
+    }()
+     
+    let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-dd"
+        return dateFormatter
+    }()
+}
+
+class MediaGenre {
+    var id: Int?
+    var name: String?
+    
+    init(id: Int, name: String) {
+        self.id = id
+        self.name = name
     }
 }

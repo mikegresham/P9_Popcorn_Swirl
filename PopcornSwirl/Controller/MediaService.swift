@@ -9,53 +9,102 @@ import Foundation
 
 class MediaService {
     private struct API {
-        private static let base = "https://itunes.apple.com/"
-        private static let search = API.base + "search"
-        private static let lookup = API.base + "lookup"
+        private static let base = "https://api.themoviedb.org/3/"
+        private static let search = API.base + "search/movie"
+        private static let lookup = API.base + "movie/"
+        private static let genre = API.base + "genre/movie/list"
         
-        static let searchURL = URL(string: API.search)!
-        static let lookupURL = URL(string: API.lookup)!
+        
+        static let apiKey = "4055e5179f75e73acdb4f6b3b1a8e472"
+        static let searchURL = API.search
+        static let lookupURL = API.lookup
+        static let genresURL = API.genre
     }
     
+    
+    
     private static func createRequest(url: URL, params: [String: Any]) -> URLRequest{
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
+    
         let body = params.map{ "\($0)=\($1)" }.joined(separator: "&")
-        request.httpBody = body.data(using: .utf8)
-        
+        var request = URLRequest(url: URL(string: "\(url)?\(body)")!)
+        request.httpMethod = "GET"
         return request
     }
     
-    private static func createSearchRequest(term: String) -> URLRequest{
-        let params = ["term": term, "media": "movie", "entity": "movie"]
-        return createRequest(url: API.searchURL, params: params)
+    private static func createSearchRequest(query: String) -> URLRequest{
+        let params = ["api_key": API.apiKey, "query": query, "language": "en-UK", "include_adult": "false", "region": "UK"]
+        return createRequest(url: URL(string: API.searchURL)!, params: params)
     }
     
     private static func createLookupRequest(id: Int) -> URLRequest{
-          let params = ["id": id]
-          return createRequest(url: API.lookupURL, params: params)
-      }
-      
+          let params = ["api_key": API.apiKey]
+        return createRequest(url: URL(string: API.lookupURL + "\(id)")! , params: params)
+    }
+    private static func createLatestRequest(query: String) -> URLRequest{
+        let params = ["api_key": API.apiKey]
+      return createRequest(url: URL(string: API.lookupURL + "\(query)")! , params: params)
+    }
+    private static func createGenresRequest() -> URLRequest{
+        let params = ["api_key": API.apiKey]
+      return createRequest(url: URL(string: API.genresURL)! , params: params)
+    }
     
-    static func getMediaList(term: String, completion: @escaping (Bool, [MediaBrief]?) -> Void) {
+    static func getGenreList(completion: @escaping (Bool, [MediaGenre]?) -> Void){
         let session = URLSession(configuration: .default)
-        let request = createSearchRequest(term: term)
+        let request = createGenresRequest()
         
+        let task = session.dataTask(with: request) { (data, response, error) in
+            if let data = data, error == nil {
+                if let response = response as? HTTPURLResponse, response.statusCode == 200,
+                    let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any],
+                    let results = responseJSON["genres"] as? [AnyObject] {
+                        //Process the results
+
+                        var list = [MediaGenre]()
+                    for i in 0 ..< results.count {
+                        guard let genre = results[i] as? [String: Any] else {
+                            continue
+                        }
+                        if let id = genre["id"] as? Int,
+                            let name = genre["name"] as? String {
+                            let mediaGenre = MediaGenre(id: id, name: name)
+                            
+                            list.append(mediaGenre)
+                        }
+                        
+                    }
+                    completion(true, list)
+                } else {
+                    completion(false, nil)
+                }
+                
+            } else {
+                completion(false, nil)
+            }
+        }
+        task.resume()
+        
+    }
+    
+    static func getMediaList(query: String, completion: @escaping (Bool, [MediaBrief]?) -> Void) {
+        let session = URLSession(configuration: .default)
+        let request = createSearchRequest(query: query)
+
         let task = session.dataTask(with: request) { (data, response, error) in
             if let data = data, error == nil {
                 if let response = response as? HTTPURLResponse, response.statusCode == 200,
                     let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any],
                     let results = responseJSON["results"] as? [AnyObject] {
                         //Process the results
+
                         var list = [MediaBrief]()
                     for i in 0 ..< results.count {
                         guard let film = results[i] as? [String: Any] else {
                             continue
                         }
-                        if let id = film["trackId"] as? Int,
-                            let artworkURL = film["artworkUrl100"] as? String {
-                            let mediaBrief = MediaBrief(id: id, artworkURL: artworkURL, notes: nil, bookmark: false, viewed: false)
+                        if let id = film["id"] as? Int,
+                            let posterPath = film["poster_path"] as? String {
+                            let mediaBrief = MediaBrief(id: id, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
                             
                             list.append(mediaBrief)
                         }
@@ -76,22 +125,26 @@ class MediaService {
     static func getMedia(id: Int, completion: @escaping (Bool, Media?) -> Void) {
         let session = URLSession(configuration: .default)
         let request = createLookupRequest(id: id)
-        
+
         let task = session.dataTask(with: request) { (data, response, error) in
             if let data = data, error == nil {
-                if let response = response as? HTTPURLResponse, response.statusCode == 200,
-                    let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any],
-                    let results = responseJSON["results"] as? [AnyObject] {
-                        //Process the results
-                    if results.count > 0,
-                        let film = results[0] as? [String: Any],
-                        let id = film["trackId"] as? Int,
-                        let title = film["trackName"] as? String,
-                        let artworkURL = film["artworkUrl100"] as? String,
-                        let description = film["longDescription"] as? String,
-                        let genre = film["primaryGenreName"] as? String {
-                        let media = Media(id: id, title: title, artworkURL: artworkURL, genre: genre, description: description, notes: nil, bookmark: false, viewed: false)
 
+
+                if let response = response as? HTTPURLResponse, response.statusCode == 200,
+                    let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
+                        //Process the results
+                    let film = responseJSON
+
+                    if  let id = film["id"] as? Int,
+                        let title = film["title"] as? String,
+                        let posterPath = film["poster_path"] as? String,
+                        let backdropPath = film["backdrop_path"] as? String,
+                        let overview = film["overview"] as? String,
+                        let voteAverage = film["vote_average"] as? Double,
+                        let voteCount = film["vote_count"] as? Int,
+                        let runtime = film["runtime"] as? Int, let releaseDate = film["release_date"] as? String {
+                        let media = Media(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", backdropPath: "https://image.tmdb.org/t/p/w500\(backdropPath)", overview: overview, voteAverage: voteAverage, voteCount: voteCount, runtime: runtime, releaseDate: releaseDate, notes: nil, bookmark: false, viewed: false)
+                        
                         completion(true, media)
                     } else {
                         completion(false, nil)
@@ -119,4 +172,41 @@ class MediaService {
         }
         task.resume()
     }
+    
+    static func getLatestMediaList(query: String, completion: @escaping (Bool, [MediaBrief]?) -> Void) {
+        let session = URLSession(configuration: .default)
+        let request = createLatestRequest(query: query)
+
+        let task = session.dataTask(with: request) { (data, response, error) in
+            if let data = data, error == nil {
+                if let response = response as? HTTPURLResponse, response.statusCode == 200,
+                    let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any],
+                    let results = responseJSON["results"] as? [AnyObject] {
+                        //Process the results
+
+                        var list = [MediaBrief]()
+                    for i in 0 ..< results.count {
+                        guard let film = results[i] as? [String: Any] else {
+                            continue
+                        }
+                        if let id = film["id"] as? Int,
+                            let posterPath = film["poster_path"] as? String {
+                            let mediaBrief = MediaBrief(id: id, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            
+                            list.append(mediaBrief)
+                        }
+                        
+                    }
+                    completion(true, list)
+                } else {
+                    completion(false, nil)
+                }
+                
+            } else {
+                completion(false, nil)
+            }
+        }
+        task.resume()
+    }
+    
 }
