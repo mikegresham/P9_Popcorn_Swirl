@@ -15,11 +15,12 @@ class MediaBrief {
     var notes: String?
     var bookmark: Bool
     var viewed: Bool
-    
+    var title: String
     var artworkData: Data?
     
-    init(id: Int, posterPath: String, notes: String?, bookmark: Bool, viewed: Bool) {
+    init(id: Int, title: String, posterPath: String, notes: String?, bookmark: Bool, viewed: Bool) {
         self.id = id
+        self.title = title
         self.posterPath = posterPath
         self.bookmark = bookmark
         self.viewed = viewed
@@ -31,7 +32,6 @@ class MediaBrief {
 }
 
 class Media: MediaBrief {
-    var title: String
     var backdropPath: String?
     var overview: String
     var voteAverage: Double
@@ -63,13 +63,12 @@ class Media: MediaBrief {
         
         self.backdropPath = backdropPath
         self.overview = overview
-        self.title = title
         self.voteAverage = voteAverage
         self.voteCount = voteCount
         self.runtime = runtime
         self.releaseDate = releaseDate
         
-        super.init(id: id, posterPath: posterPath, notes: notes, bookmark: bookmark, viewed: viewed)
+        super.init(id: id, title: title, posterPath: posterPath, notes: notes, bookmark: bookmark, viewed: viewed)
     }
     
     let yearFormatter: DateFormatter = {

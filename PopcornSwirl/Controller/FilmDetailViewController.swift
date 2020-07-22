@@ -13,7 +13,7 @@ class FilmDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         overrideUserInterfaceStyle = .dark
         MediaService.getMedia(id: mediaID, completion: { (success, media) in
             if success, let media = media {
@@ -21,6 +21,7 @@ class FilmDetailViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     self.populate(media: media)
+                    self.setGradientLayer()
                 }
             } else {
                 self.presentNoDataAlert(title: "Oops...", message: "No Data")
@@ -33,7 +34,7 @@ class FilmDetailViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.tintColor = UIColor.orange
         setNavigationBarTransparent()
-        setGradientLayer()
+        
     }
     
     func setNavigationBarTransparent() {
@@ -65,7 +66,6 @@ class FilmDetailViewController: UIViewController {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var movieTitle: UILabel!
-    @IBOutlet weak var gradientView: UIView!
     
     func populate(media: Media){
         self.movieTitle.text = media.title

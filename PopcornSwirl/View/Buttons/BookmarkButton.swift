@@ -16,5 +16,15 @@ class BookmarkButton: UIButton {
         self.setImage(UIImage.init(systemName: "bookmark"), for: .normal)
         self.setImage(UIImage.init(systemName: "bookmark.fill"), for: .selected)
     }
+    override var isSelected: Bool{
+            didSet{
+                if self.isSelected {
+                    self.tintColor = UIColor.orange
+                }
+                else{
+                    self.tintColor = UIColor.white
+                }
+            }
+        }
     
 }

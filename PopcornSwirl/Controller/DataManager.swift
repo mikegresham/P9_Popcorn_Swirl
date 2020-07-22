@@ -19,8 +19,8 @@ class DataManager {
     
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        context = appDelegate.persistentContainer.viewContext
-        entity = NSEntityDescription.entity(forEntityName: ManagedMedia.entityName, in: context)
+        context = appDelegate.persistentContainer.newBackgroundContext()
+        entity = NSEntityDescription.entity(forEntityName: "ManagedMedia", in: context)
     }
     
     // Create
@@ -28,7 +28,7 @@ class DataManager {
         var list = [MediaBrief]()
         
         for i in 0 ..< 40 {
-            var media = MediaBrief(id: 00000000, posterPath: "https://critics.io/img/movies/poster-placeholder.png", notes: nil, bookmark: false, viewed: false)
+            var media = MediaBrief(id: 00000000, title: "Movie", posterPath: "https://critics.io/img/movies/poster-placeholder.png", notes: nil, bookmark: false, viewed: false)
             list.append(media)
         }
         return list
@@ -42,22 +42,24 @@ class DataManager {
         return list
     } ()
     
-    private func createMedia(id: Int, bookmark: Bool, viewed: Bool, notes: String?) {
+    func createMedia(id: Int, bookmark: Bool, viewed: Bool, notes: String?) {
         let newMedia = NSEntityDescription.insertNewObject(forEntityName: ManagedMedia.entityName, into: context) as! ManagedMedia
         newMedia.id = id
         newMedia.bookmark = bookmark
         newMedia.viewed = viewed
         if notes != nil {
             newMedia.notes = notes!
+        } else {
+            newMedia.notes = ""
         }
     saveContext()
     }
     
     // Read
     
-    func fetchMedia(id: Int) -> ManagedMedia?{
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: ManagedMedia.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(ManagedMedia.id), id as CVarArg)
+    func fetchMedia(id: Int) -> ManagedMedia? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedMedia.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedMedia.id), id as CVarArg)
         fetchRequest.returnsObjectsAsFaults = false
         do {
             let result = try context.fetch(fetchRequest) as! [ManagedMedia]
@@ -85,11 +87,58 @@ class DataManager {
     
     // Update
     
+    func updateMedia(media: MediaBrief) {
+        if media.viewed != false || media.bookmark != false || media.notes != "" {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedMedia.entityName)
+            request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedMedia.id), media.id as CVarArg)
+             do {
+                 let result = try context.fetch(request)
+                 if let returnedResult = result as? [ManagedMedia] {
+                     if returnedResult.count != 0 {
+                         let managedMedia = returnedResult.first!
+                        managedMedia.viewed = media.viewed
+                        managedMedia.bookmark = media.bookmark
+                        if media.notes != nil{
+                            managedMedia.notes = media.notes!
+                        } else {
+                            managedMedia.notes = ""
+                        }
+                        managedMedia.lastModified = Date.init()
+                         //fetchedGoal.tasks = goal.tasks
+                         saveContext()
+                     } else {
+                        print("Fetch result was empty for specified media id: \(media.id)")
+                        
+                        self.createMedia(id: media.id, bookmark: media.bookmark, viewed: media.viewed, notes: media.notes)
+                        print("Created new media: \(media.id)")
+                    }
+                 }
+            } catch {
+                }
+        } else {
+            deleteMedia(for: media.id)
+        }
+        
+    }
+    
+    
     // Delete
     
+    func deleteMedia(for id: Int) {
+        print("hi")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedMedia.entityName)
+        request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedMedia.id), id as CVarArg)
+        request.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(request) as! [ManagedMedia]
+            context.delete(result.first!)
+        } catch {
+            print("Failed to delted media with id:\(id)")
+        }
+        saveContext()
+    }
     
-    
-    private func saveContext() {
+    func saveContext() {
         do {
             try context.save()
         }
