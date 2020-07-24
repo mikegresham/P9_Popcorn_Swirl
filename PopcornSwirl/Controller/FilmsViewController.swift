@@ -102,8 +102,26 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
         super.viewDidLoad()
         filmsCollectionView.dataSource = self
         filmsCollectionView.delegate = self
+        filmsCollectionView.alwaysBounceVertical = true
+        let refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        filmsCollectionView.addSubview(refresher)
+        
         loadData()
         selectedGenre = genres.first
+    }
+    
+    @objc func refresh() {
+        print("hi" )
+        filmsCollectionView.refreshControl?.beginRefreshing()
+        filmsCollectionView.reloadData()
+        stopRefresher()
+    }
+    func stopRefresher() {
+        DispatchQueue.main.async {
+            self.filmsCollectionView.refreshControl?.endRefreshing()
+
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
