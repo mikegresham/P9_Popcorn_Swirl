@@ -7,7 +7,27 @@
 //
 import Foundation
 
+
+
 class MediaService {
+    
+    private static let responseMessages = [
+        200: "Success.",
+        201: "The item/record was updated successfully.",
+        400: "Validation failed.",
+        401: "Authentication failed: You do not have permissions to access the service.",
+        403: "Duplicate entry: The data you tried to submit already exists.",
+        404: "Invalid id: The pre-requisite id is invalid or not found.",
+        405: "Invalid format: This service doesn't exist in that format.",
+        406: "Invalid accept header.",
+        422: "Invalid parameters: Your request parameters are incorrect.",
+        429: "Your request count (#) is over the allowed limit of (40).",
+        500: "Internal error: Something went wrong, contact TMDb.",
+        501: "Invalid service: this service does not exist.",
+        503: "Service offline: This service is temporarily offline, try again later.",
+        504: "Your request to the backend server timed out. Try again."
+    ]
+    
     private struct API {
         private static let base = "https://api.themoviedb.org/3/"
         private static let search = API.base + "search/movie"
@@ -79,10 +99,10 @@ class MediaService {
                         
                     }
                     completion(true, list)
-                } else {
+                } else if let response = response as? HTTPURLResponse {
                     completion(false, nil)
+                    print(responseMessages[response.statusCode]!)
                 }
-                
             } else {
                 completion(false, nil)
             }
@@ -118,8 +138,9 @@ class MediaService {
                     }
 
                     completion(true, list)
-                } else {
+                } else if let response = response as? HTTPURLResponse {
                     completion(false, nil)
+                    print(responseMessages[response.statusCode]!)
                 }
                 
             } else {
@@ -155,8 +176,9 @@ class MediaService {
                     } else {
                         completion(false, nil)
                     }
-                } else {
+                } else if let response = response as? HTTPURLResponse {
                     completion(false, nil)
+                    print(responseMessages[response.statusCode]!)
                 }
                 
             } else {
@@ -170,10 +192,11 @@ class MediaService {
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: imageURL) { (data, response, error) in
             if let data = data, error == nil,
-                let response = response as? HTTPURLResponse, response.statusCode == 200{
+                let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 completion(true, data)
-            } else {
+            } else if let response = response as? HTTPURLResponse {
                 completion(false, nil)
+                print(responseMessages[response.statusCode]!)
             }
         }
         task.resume()
@@ -210,8 +233,9 @@ class MediaService {
                         
                     }
                     completion(true, list)
-                } else {
+                } else if let response = response as? HTTPURLResponse {
                     completion(false, nil)
+                    print(responseMessages[response.statusCode]!)
                 }
                 
             } else {
@@ -246,8 +270,9 @@ class MediaService {
                     }
                     
                     completion(true, list)
-                } else {
+                } else if let response = response as? HTTPURLResponse {
                     completion(false, nil)
+                    print(responseMessages[response.statusCode]!)
                 }
                 
             } else {

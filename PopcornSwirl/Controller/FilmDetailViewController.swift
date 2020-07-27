@@ -11,30 +11,32 @@ import UIKit
 
 class FilmDetailViewController: UIViewController {
     
+    @IBOutlet weak var detailTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        detailTableView.dataSource = self
+        detailTableView.delegate = self
         overrideUserInterfaceStyle = .dark
+        
         MediaService.getMedia(id: mediaID, completion: { (success, media) in
             if success, let media = media {
                 self.media = media
                 
                 DispatchQueue.main.async {
-                    self.populate(media: media)
-                    self.setGradientLayer()
+                    self.detailTableView.reloadData()
                 }
             } else {
                 self.presentNoDataAlert(title: "Oops...", message: "No Data")
             }
             
         })
+ 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.tintColor = UIColor.orange
         setNavigationBarTransparent()
-        
     }
     
     func setNavigationBarTransparent() {
@@ -47,9 +49,7 @@ class FilmDetailViewController: UIViewController {
     func setGradientLayer() {
         let width = backgroundImageView.frame.width
         let height = backgroundImageView.frame.height
-        let sHeight:CGFloat = 100.0
-
-        
+        let sHeight:CGFloat = 100
         let bottomImageGradient = CAGradientLayer()
         bottomImageGradient.frame = CGRect(x: 0, y: height - sHeight, width: width, height: sHeight)
         bottomImageGradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
@@ -106,4 +106,36 @@ class FilmDetailViewController: UIViewController {
         let minutesplural = minutes == 1 ? "" : "s"
         return "\(hours) hour\(hoursplural) \(minutes) minute\(minutesplural)"
     }
+}
+extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: "imageCell") as! ImageTableViewCell
+            if media != nil {
+            cell.setup(imageURL: media!.backdropPath!)
+            }
+            return cell
+        default:
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: "summaryCell") as! SummaryTableViewCell
+            if media != nil {
+            cell.populate(media: media!)
+            }
+            return cell
+        }
+        
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0:
+            return tableView.bounds.height/2
+        default:
+            return tableView.estimatedRowHeight
+        }
+    }
+    
 }

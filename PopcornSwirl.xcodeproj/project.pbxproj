@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		3E253D4F24ADF26D005376A2 /* NoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E253D4E24ADF26D005376A2 /* NoteButton.swift */; };
 		3E253D5124AE239D005376A2 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E253D5024AE239D005376A2 /* ListTableViewCell.swift */; };
+		3E586F7724CEEA3F00C2A083 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */; };
+		3E586F7924CEEA6500C2A083 /* SummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */; };
+		3E586F7B24CEEA9000C2A083 /* RecommenedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */; };
+		3E586F7D24CEEABA00C2A083 /* AdvertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7C24CEEABA00C2A083 /* AdvertTableViewCell.swift */; };
+		3E586F7F24CEFF1B00C2A083 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7E24CEFF1B00C2A083 /* NoteTableViewCell.swift */; };
 		3EA4ABBD24954CB0006214F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA4ABBC24954CB0006214F7 /* AppDelegate.swift */; };
 		3EA4ABBF24954CB0006214F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA4ABBE24954CB0006214F7 /* SceneDelegate.swift */; };
 		3EA4ABC424954CB0006214F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EA4ABC224954CB0006214F7 /* Main.storyboard */; };
@@ -34,6 +39,11 @@
 /* Begin PBXFileReference section */
 		3E253D4E24ADF26D005376A2 /* NoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteButton.swift; sourceTree = "<group>"; };
 		3E253D5024AE239D005376A2 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
+		3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryTableViewCell.swift; sourceTree = "<group>"; };
+		3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommenedTableViewCell.swift; sourceTree = "<group>"; };
+		3E586F7C24CEEABA00C2A083 /* AdvertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertTableViewCell.swift; sourceTree = "<group>"; };
+		3E586F7E24CEFF1B00C2A083 /* NoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTableViewCell.swift; sourceTree = "<group>"; };
 		3EA4ABB924954CB0006214F7 /* Popcorn Swirl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Popcorn Swirl.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EA4ABBC24954CB0006214F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EA4ABBE24954CB0006214F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +79,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E586F7524CEEA2F00C2A083 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */,
+				3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */,
+				3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */,
+				3E586F7C24CEEABA00C2A083 /* AdvertTableViewCell.swift */,
+				3E586F7E24CEFF1B00C2A083 /* NoteTableViewCell.swift */,
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		3EA4ABB024954CB0006214F7 = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +132,7 @@
 		3EA4ABD424956EEC006214F7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3E586F7524CEEA2F00C2A083 /* New Group */,
 				3EE6ABA324A3F7150074F19C /* Buttons */,
 				3EA4ABC224954CB0006214F7 /* Main.storyboard */,
 				3EBF8890249BFA9D007C46B2 /* FilmCollectionViewCell.swift */,
@@ -232,10 +255,14 @@
 				3EE6ABA524A3F7550074F19C /* BookmarkButton.swift in Sources */,
 				3EBF888D249BF880007C46B2 /* DataManager.swift in Sources */,
 				3EBF888F249BF89A007C46B2 /* MediaService.swift in Sources */,
+				3E586F7B24CEEA9000C2A083 /* RecommenedTableViewCell.swift in Sources */,
 				3EBF8893249C003C007C46B2 /* FilmDetailViewController.swift in Sources */,
+				3E586F7924CEEA6500C2A083 /* SummaryTableViewCell.swift in Sources */,
 				3E253D4F24ADF26D005376A2 /* NoteButton.swift in Sources */,
 				3E253D5124AE239D005376A2 /* ListTableViewCell.swift in Sources */,
+				3E586F7F24CEFF1B00C2A083 /* NoteTableViewCell.swift in Sources */,
 				3EA4ABBF24954CB0006214F7 /* SceneDelegate.swift in Sources */,
+				3E586F7D24CEEABA00C2A083 /* AdvertTableViewCell.swift in Sources */,
 				3EE6AB98249D24750074F19C /* SplitViewController.swift in Sources */,
 				3EE6AB9E24A0D4BE0074F19C /* ManagedMedia.swift in Sources */,
 				3EA4ABD824956F4C006214F7 /* FilmsViewController.swift in Sources */,
@@ -243,6 +270,7 @@
 				3EE6ABAE24A538FF0074F19C /* AddNoteViewController.swift in Sources */,
 				3EA4ABC724954CB0006214F7 /* PopcornSwirl.xcdatamodeld in Sources */,
 				3EE6AB9A249D6BF10074F19C /* ListTableViewController.swift in Sources */,
+				3E586F7724CEEA3F00C2A083 /* ImageTableViewCell.swift in Sources */,
 				3EBF8891249BFA9D007C46B2 /* FilmCollectionViewCell.swift in Sources */,
 				3EBF888B249BEBC2007C46B2 /* Media.swift in Sources */,
 			);

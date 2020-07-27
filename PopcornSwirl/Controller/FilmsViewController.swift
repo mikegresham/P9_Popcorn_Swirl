@@ -32,25 +32,19 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch indexPath.section {
         case 0:            
-            let width = filmsCollectionView.frame.size.width - 20
+            let width = filmsCollectionView.frame.size.width - 40
             let height = CGFloat(41.0)
             return CGSize(width: width, height: height)
         default:
             var columns: Int
-            columns = (Int(filmsCollectionView.frame.size.width) - 10) / 142
-            let width = (filmsCollectionView.frame.size.width - (10 * (CGFloat(columns) + 1))) / CGFloat(columns)
+            columns = (Int(filmsCollectionView.frame.size.width) - 20) / 152
+            let width = (filmsCollectionView.frame.size.width - (20 * (CGFloat(columns) + 1))) / CGFloat(columns)
             let height = (width * 1.5) + 44
             return CGSize(width: width, height: height)
         }
 
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch section {
@@ -106,9 +100,20 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         filmsCollectionView.addSubview(refresher)
+        filmsCollectionView.backgroundColor = .clear
+        //filmsCollectionView.backgroundView?.contentMode = .scaleAspectFill
+        //backgroundImage()
+        
         
         loadData()
         selectedGenre = genres.first
+    }
+    
+    func backgroundImage(){
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage(named: "background2")
+        backgroundImage.contentMode = .scaleAspectFill
+        self.view.insertSubview(backgroundImage, at: 0)
     }
     
     @objc func refresh() {

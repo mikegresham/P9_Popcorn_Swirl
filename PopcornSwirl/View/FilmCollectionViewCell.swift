@@ -43,6 +43,7 @@ class FilmCollectionViewCell: UICollectionViewCell {
         self.contentView.layer.borderWidth = 0.2
         self.contentView.layer.borderColor = UIColor.black.cgColor
         self.contentView.layer.masksToBounds = true
+        self.backgroundColor = .clear
     }
     
     func populate(mediaBrief: MediaBrief) {
