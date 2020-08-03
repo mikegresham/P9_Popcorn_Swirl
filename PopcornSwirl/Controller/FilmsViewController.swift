@@ -117,7 +117,6 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     @objc func refresh() {
-        print("hi" )
         filmsCollectionView.refreshControl?.beginRefreshing()
         filmsCollectionView.reloadData()
         stopRefresher()
@@ -125,7 +124,6 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
     func stopRefresher() {
         DispatchQueue.main.async {
             self.filmsCollectionView.refreshControl?.endRefreshing()
-
         }
     }
     

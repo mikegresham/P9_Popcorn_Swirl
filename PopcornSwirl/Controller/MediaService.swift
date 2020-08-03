@@ -100,8 +100,8 @@ class MediaService {
                     }
                     completion(true, list)
                 } else if let response = response as? HTTPURLResponse {
-                    completion(false, nil)
                     print(responseMessages[response.statusCode]!)
+                    completion(false, nil)
                 }
             } else {
                 completion(false, nil)
@@ -139,8 +139,8 @@ class MediaService {
 
                     completion(true, list)
                 } else if let response = response as? HTTPURLResponse {
-                    completion(false, nil)
                     print(responseMessages[response.statusCode]!)
+                    completion(false, nil)
                 }
                 
             } else {
@@ -177,8 +177,8 @@ class MediaService {
                         completion(false, nil)
                     }
                 } else if let response = response as? HTTPURLResponse {
-                    completion(false, nil)
                     print(responseMessages[response.statusCode]!)
+                    completion(false, nil)
                 }
                 
             } else {
@@ -195,8 +195,9 @@ class MediaService {
                 let response = response as? HTTPURLResponse, response.statusCode == 200 {
                 completion(true, data)
             } else if let response = response as? HTTPURLResponse {
-                completion(false, nil)
                 print(responseMessages[response.statusCode]!)
+                completion(false, nil)
+               
             }
         }
         task.resume()
@@ -234,8 +235,8 @@ class MediaService {
                     }
                     completion(true, list)
                 } else if let response = response as? HTTPURLResponse {
-                    completion(false, nil)
                     print(responseMessages[response.statusCode]!)
+                    completion(false, nil)
                 }
                 
             } else {
@@ -271,8 +272,8 @@ class MediaService {
                     
                     completion(true, list)
                 } else if let response = response as? HTTPURLResponse {
-                    completion(false, nil)
                     print(responseMessages[response.statusCode]!)
+                    completion(false, nil)
                 }
                 
             } else {
