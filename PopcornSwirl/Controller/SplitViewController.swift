@@ -16,7 +16,6 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
         self.delegate = self
         overrideUserInterfaceStyle = .dark
         self.preferredDisplayMode = .allVisible
-        print("hi")
     }
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         return true

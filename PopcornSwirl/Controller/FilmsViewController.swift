@@ -99,11 +99,7 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
         filmsCollectionView.alwaysBounceVertical = true
         let refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        filmsCollectionView.addSubview(refresher)
-        filmsCollectionView.backgroundColor = .clear
-        //filmsCollectionView.backgroundView?.contentMode = .scaleAspectFill
-        //backgroundImage()
-        
+        filmsCollectionView.refreshControl = refresher
         
         loadData()
         selectedGenre = genres.first
@@ -119,18 +115,20 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
     @objc func refresh() {
         filmsCollectionView.refreshControl?.beginRefreshing()
         filmsCollectionView.reloadData()
+        self.setGenre(genre: self.selectedGenre!)
         stopRefresher()
     }
     func stopRefresher() {
-        DispatchQueue.main.async {
-            self.filmsCollectionView.refreshControl?.endRefreshing()
-        }
+        self.filmsCollectionView.refreshControl?.endRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         overrideUserInterfaceStyle = .dark
         navigationController?.navigationBar.isHidden = true
+        DispatchQueue.main.async {
+            self.filmsCollectionView.reloadData()
+        }
     }
     
     func loadData() {

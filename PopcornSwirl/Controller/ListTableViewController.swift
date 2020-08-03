@@ -13,30 +13,43 @@ class ListTableViewController: UITableViewController {
     
     var mediaList = [Media]()
     var filteredList = [Media]()
-    
-    @IBOutlet weak var segmentControl: UISegmentedControl!
-    
+    var indicator = UIActivityIndicatorView()
+
+    func activityIndicator() {
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.center = self.view.center
+        indicator.hidesWhenStopped = true
+        self.view.addSubview(indicator)
+    }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
-        let indexPath = IndexPath(row: 0, section: 0)
-        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44.0))
+        config()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadData()
-        filterData()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+    }
+    
+    func config() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        activityIndicator()
+        let selectedIndex = tabBarController!.selectedIndex
+        switch selectedIndex {
+        case 2:
+            self.title = "Viewed"
+        default:
+            self.title = "Bookmarked"
         }
     }
     
     func loadData() {
+        indicator.startAnimating()
         mediaList.removeAll()
         let managedMediaList = DataManager.shared.fetchMediaHistory()!
-        print(managedMediaList.count)
         for managedMedia in managedMediaList {
             MediaService.getMedia(id: managedMedia.id) { (success, media) in
                 if success, let media = media {
@@ -47,51 +60,39 @@ class ListTableViewController: UITableViewController {
                 } else {
                     //self.presentNoDataAlert(title: "Oops...", message: "No Data")
                 }
+                DispatchQueue.main.async {
+                    self.filterData()
+                    self.tableView.reloadData()
+                    self.indicator.stopAnimating()
+                }
             }
         }
     }
     
     func filterData() {
-        let segment = segmentControl.selectedSegmentIndex
-        switch segment {
-        case 0:
-            filteredList = mediaList.filter{ $0.bookmark == true }
+        let selectedIndex = tabBarController!.selectedIndex
+        print("Index: \(selectedIndex)")
+        switch selectedIndex {
         case 1:
-            filteredList = mediaList.filter{ $0.viewed == true }
+            filteredList = mediaList.filter{ $0.bookmark == true }
         case 2:
-            filteredList = mediaList.filter{ $0.notes != "" }
+            filteredList = mediaList.filter{ $0.viewed == true }
         default:
             filteredList = mediaList
-        }
-    }
-    @IBAction func segmentValueChanged(_ sender: Any) {
-        filterData()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
         }
     }
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section{
-               case 0:
-                    return 1
-               default:
-                    return filteredList.count
-               }
+        return filteredList.count
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section{
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell")!
-            return cell
-        default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "filmCell")! as! ListTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "filmCell")! as! ListTableViewCell
             cell.populate(media: filteredList[indexPath.row])
             if let imageURL = URL(string: filteredList[indexPath.row].posterPath) {
                 MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
@@ -103,10 +104,30 @@ class ListTableViewController: UITableViewController {
                     }
                     
                 })
-            }
-            return cell
         }
-        
-
+        return cell
+    }
+    
+    // MARK: Cell Swipe Actions
+    
+   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") {(action, view, completion) in
+            self.deleteItem(at: indexPath)
+        }
+        return UISwipeActionsConfiguration.init(actions: [delete])
+    }
+    
+    func deleteItem(at indexPath: IndexPath) {
+        tableView.beginUpdates()
+        let cell = tableView.cellForRow(at: indexPath) as! ListTableViewCell
+        DataManager.shared.deleteMedia(for: cell.mediaId)
+        mediaList.removeAll(where: {( $0.id == cell.mediaId)})
+        filteredList.removeAll(where: {( $0.id == cell.mediaId)})
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
     }
 }

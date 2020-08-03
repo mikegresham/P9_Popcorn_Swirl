@@ -18,6 +18,8 @@ class ListTableViewCell : UITableViewCell {
     @IBOutlet weak var viewedButton: UIButton!
     @IBOutlet weak var notesButton: UIButton!
     
+    var mediaId = Int()
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,6 +31,7 @@ class ListTableViewCell : UITableViewCell {
         self.bookmarkButton.isSelected = media.bookmark == true ? true : false
         self.viewedButton.isSelected = media.viewed == true ? true : false
         self.notesButton.isSelected = media.notes != "" ? true : false
+        self.mediaId = media.id
     }
     
     func setImage(image: UIImage){

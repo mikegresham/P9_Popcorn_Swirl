@@ -33,7 +33,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     func setGenre(genre: String) {
         self.selectedGenre = genre
-        self.genreTextField.text = genre
+        self.genreTextField.text = "\(genre) ▾"
     }
     
     func createToolBar() {
