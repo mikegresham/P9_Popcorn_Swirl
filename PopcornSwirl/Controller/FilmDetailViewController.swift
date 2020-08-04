@@ -23,6 +23,7 @@ class FilmDetailViewController: UIViewController {
                 self.media = media
                 
                 DispatchQueue.main.async {
+                    self.setBackgroundImage()
                     self.detailTableView.reloadData()
                 }
             } else {
@@ -30,7 +31,41 @@ class FilmDetailViewController: UIViewController {
             }
             
         })
- 
+        registerForKeyboardNotifications()
+    }
+    
+    //MARK: Keyboard Handling
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification){
+        let keyboardFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+        adjustLayoutForKeyboard(targetHeight: keyboardFrame.size.height)
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification){
+        adjustLayoutForKeyboard(targetHeight: 0)
+    }
+
+    func adjustLayoutForKeyboard(targetHeight: CGFloat){
+        detailTableView.contentInset.bottom = targetHeight
+    }
+    
+    
+    func setBackgroundImage() {
+        if let imageURL = URL(string: media!.posterPath) {
+            MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
+                if success, let imageData = imageData,
+                    let artwork = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.backgroundImageView.image = artwork
+                    }
+                }
+                
+            })
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,51 +80,13 @@ class FilmDetailViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = .clear
     }
-    
-    func setGradientLayer() {
-        let width = backgroundImageView.frame.width
-        let height = backgroundImageView.frame.height
-        let sHeight:CGFloat = 100
-        let bottomImageGradient = CAGradientLayer()
-        bottomImageGradient.frame = CGRect(x: 0, y: height - sHeight, width: width, height: sHeight)
-        bottomImageGradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-        backgroundImageView.layer.insertSublayer(bottomImageGradient, at: 0)
-    }
     var mediaID: Int!
     
     private var media: Media?
     
     @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var bookmarkButton: UIButton!
-    @IBOutlet weak var viewedButton: UIButton!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var captionLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
-    @IBOutlet weak var movieTitle: UILabel!
     
-    func populate(media: Media){
-        self.movieTitle.text = media.title
-        self.descriptionLabel.text = media.overview
-        self.bookmarkButton.isSelected = media.bookmark
-        self.viewedButton.isSelected = media.viewed
-        let caption = "\(media.yearText) ∙ \(formatRuntime(runtime: media.runtime!))"
-        captionLabel.text = caption
-        self.ratingLabel.text = media.ratingText + " " + media.scoreText
 
-        if let imageURL = URL(string: media.backdropPath!) {
-            MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
-                if success, let imageData = imageData,
-                    let artwork = UIImage(data: imageData) {
-                    DispatchQueue.main.async {
-                        self.backgroundImageView.image = artwork
-                    }
-                }
-                
-            })
-        }
-    }
-    
-    
     func presentNoDataAlert(title: String?, message: String?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Got it!", style: .cancel, handler: {(action) -> Void in
@@ -109,7 +106,7 @@ class FilmDetailViewController: UIViewController {
 }
 extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -120,14 +117,27 @@ extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
             cell.setup(imageURL: media!.backdropPath!)
             }
             return cell
-        default:
+        case 1:
             let cell = detailTableView.dequeueReusableCell(withIdentifier: "summaryCell") as! SummaryTableViewCell
             if media != nil {
             cell.populate(media: media!)
             }
             return cell
+        case 2:
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: "noteCell") as! NoteTableViewCell
+            if media != nil {
+                cell.populate(media: media!)
+                cell.delegate = self
+            }
+            return cell
+        default:
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: "noteCell") as! NoteTableViewCell
+            if media != nil {
+                cell.populate(media: media!)
+                cell.delegate = self
+            }
+            return cell
         }
-        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
@@ -136,6 +146,16 @@ extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             return tableView.estimatedRowHeight
         }
+    }
+    
+    
+}
+
+extension FilmDetailViewController: NoteTableViewCellDelegate {
+    func updateRowHeight() {
+       //TableViewController handles row height automatically
+        detailTableView.beginUpdates()
+        detailTableView.endUpdates()
     }
     
 }

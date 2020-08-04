@@ -9,8 +9,61 @@
 import Foundation
 import UIKit
 
-class NoteTableViewCell: UITableViewCell {
+protocol NoteTableViewCellDelegate {
+    func updateRowHeight()
+}
+
+class NoteTableViewCell: UITableViewCell, UITextViewDelegate {
+    var delegate: NoteTableViewCellDelegate?
+    @IBOutlet weak var noteTextView: UITextView!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        noteTextView.delegate = self
+        noteTextView.isScrollEnabled = false
+        textViewDidChange(noteTextView)
+    }
     
+    func populate(media: Media) {
+        if let notes = media.notes {
+            self.noteTextView.text = notes
+        } else {
+            noteTextView.text = "Tap to add note..."
+        }
+    }
     
+    //MARK: Text View Interactions
+        func textViewDidChange(_ textView: UITextView) {
+            //Adjust size of text view, whilst users is typing.
+            let size = CGSize(width: textView.frame.size.width, height: .infinity)
+            let estimatedSize = textView.sizeThatFits(size)
+            textView.frame.size.height = estimatedSize.height
+            delegate?.self.updateRowHeight()
+        }
+        
+        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            //If user presses return, keyboard should close.
+            if (text == "\n"){
+                textView.resignFirstResponder()
+            }
+            return true
+        }
+        
+        func textViewDidEndEditing(_ textView: UITextView) {
+            if textView.text == "" {
+                //Placeholder text for goal
+                textView.text = "Tap to add note..."
+            } else {
+                //Update Goal
+            //delegate?.self.goalUpdate(cell: self)
+            }
+            
+        }
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            //If placeholder text, set to blank
+            if textView.text == "Tap to add note..." {
+                textView.text = ""
+            }
+        }
 }

@@ -28,12 +28,13 @@ class FilmCollectionViewCell: UICollectionViewCell {
         bookmarkButton.isSelected.toggle()
         mediaBrief!.bookmark = bookmarkButton.isSelected
         DataManager.shared.updateMedia(media: mediaBrief!)
-        
+        DataManager.shared.mediaList.first(where: {$0.id == mediaBrief?.id})?.bookmark = bookmarkButton.isSelected
     }
     @IBAction func viewedButtonPressed(_ sender: Any) {
         viewedButton.isSelected.toggle()
         mediaBrief!.viewed =  viewedButton.isSelected
         DataManager.shared.updateMedia(media: mediaBrief!)
+        DataManager.shared.mediaList.first(where: {$0.id == mediaBrief?.id})?.viewed = viewedButton.isSelected
     }
     @IBAction func notesButtonPressed(_ sender: Any) {
         delegate?.addNote(mediaBrief: mediaBrief!)

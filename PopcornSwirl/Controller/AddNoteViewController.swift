@@ -23,6 +23,9 @@ class AddNoteViewController: UIViewController {
     @IBAction func doneButtonAction(_ sender: Any) {
         mediaBrief?.notes = noteTextView.text == "" ? nil : noteTextView.text
         DataManager.shared.updateMedia(media: mediaBrief!)
+        if noteTextView.text != nil && noteTextView.text != "Tap to add note..." {
+            DataManager.shared.mediaList.first(where: {($0.id == mediaBrief!.id)})?.notes = noteTextView.text
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

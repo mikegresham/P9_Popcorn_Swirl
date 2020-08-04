@@ -84,9 +84,9 @@
 			children = (
 				3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */,
 				3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */,
+				3E586F7E24CEFF1B00C2A083 /* NoteTableViewCell.swift */,
 				3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */,
 				3E586F7C24CEEABA00C2A083 /* AdvertTableViewCell.swift */,
-				3E586F7E24CEFF1B00C2A083 /* NoteTableViewCell.swift */,
 			);
 			name = "New Group";
 			sourceTree = "<group>";

@@ -34,7 +34,7 @@ class ImageTableViewCell: UITableViewCell {
         let sHeight:CGFloat = 100
         let bottomImageGradient = CAGradientLayer()
         bottomImageGradient.frame = CGRect(x: 0, y: height - sHeight, width: width, height: sHeight)
-        bottomImageGradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        bottomImageGradient.colors = [UIColor.clear.cgColor, UIColor.clear.cgColor]
         backdropImageView.layer.insertSublayer(bottomImageGradient, at: 0)
     }
 }
