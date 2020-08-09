@@ -52,7 +52,9 @@ class FilmCollectionViewCell: UICollectionViewCell {
         bookmarkButton.isSelected = mediaBrief.bookmark
         viewedButton.isSelected = mediaBrief.viewed
         if mediaBrief.notes != nil {
-            self.notesButton.isSelected = true
+            notesButton.isSelected = mediaBrief.notes != "" ? true : false
+        } else {
+            notesButton.isSelected = false
         }
     }
     
@@ -61,3 +63,4 @@ class FilmCollectionViewCell: UICollectionViewCell {
     }
     
 }
+

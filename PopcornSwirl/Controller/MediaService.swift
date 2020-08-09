@@ -131,7 +131,11 @@ class MediaService {
                             let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
                             let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
-                            
+                                if let managedMedia = DataManager.shared.fetchMedia(id: id) {
+                                mediaBrief.notes = managedMedia.notes
+                                mediaBrief.viewed = managedMedia.viewed
+                                mediaBrief.bookmark = managedMedia.bookmark
+                                }
                             list.append(mediaBrief)
                         }
                         
@@ -175,17 +179,11 @@ class MediaService {
                         if let id = film["id"] as? Int, let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
                             let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
-                            if let managedMedia = DataManager.shared.fetchMedia(id: id) {
-                                mediaBrief.notes = managedMedia.notes
-                                mediaBrief.viewed = managedMedia.viewed
-                                mediaBrief.bookmark = managedMedia.bookmark
-                                print(mediaBrief.viewed)
-                            }
+
                             
                             list.append(mediaBrief)
                         }
                     }
-                    print(list.count)
 
                     if  let id = film["id"] as? Int,
                         let title = film["title"] as? String,
@@ -196,6 +194,12 @@ class MediaService {
                         let voteCount = film["vote_count"] as? Int,
                         let runtime = film["runtime"] as? Int, let releaseDate = film["release_date"] as? String {
                         let media = Media(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", backdropPath: "https://image.tmdb.org/t/p/w500\(backdropPath)", overview: overview, voteAverage: voteAverage, voteCount: voteCount, runtime: runtime, releaseDate: releaseDate, notes: nil, bookmark: false, viewed: false, recommendations: list)
+                        if let managedMedia = DataManager.shared.fetchMedia(id: id) {
+                            media.notes = managedMedia.notes
+                            media.viewed = managedMedia.viewed
+                            media.bookmark = managedMedia.bookmark
+                        }
+                        
                         completion(true, media)
                     } else {
                         completion(false, nil)
@@ -289,6 +293,12 @@ class MediaService {
                         if let id = film["id"] as? Int, let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
                             let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            if let managedMedia = DataManager.shared.fetchMedia(id: id) {
+                                mediaBrief.notes = managedMedia.notes
+                                mediaBrief.viewed = managedMedia.viewed
+                                mediaBrief.bookmark = managedMedia.bookmark
+                                print(mediaBrief.viewed)
+                            }
                             list.append(mediaBrief)
                         }
                         

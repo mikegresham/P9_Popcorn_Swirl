@@ -18,7 +18,23 @@ class SummaryTableViewCell: UITableViewCell {
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    var media: Media?
+    @IBAction func bookmarkButtonAction(_ sender: Any) {
+        bookmarkButton.isSelected.toggle()
+        self.media?.bookmark = bookmarkButton.isSelected
+        DataManager.shared.updateMedia(media: media!)
+            DataManager.shared.mediaList.first(where: {$0.id == media?.id})?.bookmark = bookmarkButton.isSelected
+    }
+    
+    @IBAction func viewedButtonAction(_ sender: Any) {
+        viewedButton.isSelected.toggle()
+               media!.viewed =  viewedButton.isSelected
+               DataManager.shared.updateMedia(media: media!)
+               DataManager.shared.mediaList.first(where: {$0.id == media?.id})?.viewed = viewedButton.isSelected
+    }
+    
     func populate(media: Media) {
+        self.media = media
         titleLabel.text = media.title
         ratingLabel.text = media.ratingText + " " + media.scoreText
         bookmarkButton.isSelected = media.bookmark

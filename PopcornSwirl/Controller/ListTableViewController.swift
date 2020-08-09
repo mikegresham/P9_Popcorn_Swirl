@@ -130,4 +130,13 @@ class ListTableViewController: UITableViewController {
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showFilmDetail" {
+            let filmDetailViewController = segue.destination as! FilmDetailViewController
+            let cell = sender as! ListTableViewCell
+            let indexPath = tableView.indexPath(for: cell)
+            filmDetailViewController.mediaID = mediaList[indexPath!.row].id
+        }
+    }
 }

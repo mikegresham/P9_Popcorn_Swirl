@@ -94,6 +94,7 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        backgroundImage()
         filmsCollectionView.dataSource = self
         filmsCollectionView.delegate = self
         filmsCollectionView.alwaysBounceVertical = true
@@ -107,8 +108,13 @@ class FilmsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func backgroundImage(){
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "background2")
+        backgroundImage.image = UIImage(named: "background")
         backgroundImage.contentMode = .scaleAspectFill
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        backgroundImage.addSubview(blurEffectView)
         self.view.insertSubview(backgroundImage, at: 0)
     }
     

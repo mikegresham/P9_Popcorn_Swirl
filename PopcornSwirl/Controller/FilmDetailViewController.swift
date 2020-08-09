@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 
 class FilmDetailViewController: UIViewController {
-    
+    var indicator = UIActivityIndicatorView()
+
     @IBOutlet weak var detailTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        detailTableView.dataSource = self
-        detailTableView.delegate = self
-        overrideUserInterfaceStyle = .dark
+        
+        config()
         
         MediaService.getMedia(id: mediaID, completion: { (success, media) in
             if success, let media = media {
@@ -25,13 +25,31 @@ class FilmDetailViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.setBackgroundImage()
                     self.detailTableView.reloadData()
+                    self.indicator.stopAnimating()
                 }
             } else {
                 self.presentNoDataAlert(title: "Oops...", message: "No Data")
             }
             
         })
+        
+    }
+    
+    func config() {
+        detailTableView.dataSource = self
+        detailTableView.delegate = self
+        overrideUserInterfaceStyle = .dark
         registerForKeyboardNotifications()
+        activityIndicator()
+        indicator.startAnimating()
+    }
+    
+    func activityIndicator() {
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.center = self.view.center
+        indicator.hidesWhenStopped = true
+        self.view.addSubview(indicator)
     }
     
     //MARK: Keyboard Handling
@@ -71,6 +89,7 @@ class FilmDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.tintColor = UIColor.orange
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         setNavigationBarTransparent()
     }
     
@@ -153,7 +172,13 @@ extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showRecommendedFilm" {
+            let filmDetailViewController = segue.destination as! FilmDetailViewController
+            let cell = sender as! RecommendedCollectionViewCell
+            filmDetailViewController.mediaID = cell.media?.id
+        }
+    }
 }
 
 extension FilmDetailViewController: NoteTableViewCellDelegate {
@@ -164,3 +189,15 @@ extension FilmDetailViewController: NoteTableViewCellDelegate {
     }
     
 }
+
+extension FilmDetailViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if detailTableView.contentOffset.y > 200.0 {
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+        } else if detailTableView.contentOffset.y <= 100.0 {
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+        }
+        print(detailTableView.contentOffset)
+    }
+}
+

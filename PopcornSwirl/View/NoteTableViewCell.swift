@@ -17,6 +17,8 @@ class NoteTableViewCell: UITableViewCell, UITextViewDelegate {
     var delegate: NoteTableViewCellDelegate?
     @IBOutlet weak var noteTextView: UITextView!
     
+    var media: Media?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -26,7 +28,8 @@ class NoteTableViewCell: UITableViewCell, UITextViewDelegate {
     }
     
     func populate(media: Media) {
-        if let notes = media.notes {
+        self.media = media
+        if let notes = media.notes, media.notes != "" {
             self.noteTextView.text = notes
         } else {
             noteTextView.text = "Tap to add note..."
@@ -55,8 +58,11 @@ class NoteTableViewCell: UITableViewCell, UITextViewDelegate {
                 //Placeholder text for goal
                 textView.text = "Tap to add note..."
             } else {
-                //Update Goal
-            //delegate?.self.goalUpdate(cell: self)
+                 media?.notes = noteTextView.text == "" ? nil : noteTextView.text
+                       DataManager.shared.updateMedia(media: media!)
+                       if noteTextView.text != nil && noteTextView.text != "Tap to add note..." {
+                           DataManager.shared.mediaList.first(where: {($0.id == media!.id)})?.notes = noteTextView.text
+                       }
             }
             
         }
