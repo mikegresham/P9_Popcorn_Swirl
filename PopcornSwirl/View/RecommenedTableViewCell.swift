@@ -9,7 +9,33 @@
 import Foundation
 import UIKit
 
-class RecommendedTableViewCell: UITableViewCell {
+class RecommendedCollectionViewCell: UICollectionViewCell {
+    
+    @IBOutlet weak var posterImageView: UIImageView!
+    var media: MediaBrief?
+    
+    func populate(media: MediaBrief) {
+        self.media = media
+        if let imageURL = URL(string: media.posterPath) {
+            MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
+                if success, let imageData = imageData,
+                    let artwork = UIImage(data: imageData) {
+                    DispatchQueue.main.async {
+                        self.posterImageView.image = artwork
+                    }
+                }
+                
+            })
+        }
+    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.contentView.layer.cornerRadius = 3.0
+        self.contentView.layer.borderWidth = 0.2
+        self.contentView.layer.borderColor = UIColor.black.cgColor
+        self.contentView.layer.masksToBounds = true
+        self.backgroundColor = .clear
+    }
     
     
 }

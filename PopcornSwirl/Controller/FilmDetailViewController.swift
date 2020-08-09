@@ -106,7 +106,7 @@ class FilmDetailViewController: UIViewController {
 }
 extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -130,11 +130,16 @@ extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.delegate = self
             }
             return cell
-        default:
-            let cell = detailTableView.dequeueReusableCell(withIdentifier: "noteCell") as! NoteTableViewCell
+        case 3:
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: "recommendedCell") as! RecommendedTableViewCell
             if media != nil {
-                cell.populate(media: media!)
-                cell.delegate = self
+                cell.populate(recommendations: media!.recommendations!)
+            }
+            return cell
+        default:
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: "recommendedCell") as! RecommendedTableViewCell
+            if media != nil {
+                cell.populate(recommendations: media!.recommendations!)
             }
             return cell
         }

@@ -28,19 +28,19 @@
                                 </view>
                                 <blurEffect style="regular"/>
                             </visualEffectView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="B5D-wR-7Eo">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="B5D-wR-7Eo">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" id="0FS-EK-0VE" customClass="ImageTableViewCell" customModule="Popcorn_Swirl" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0FS-EK-0VE" id="K7A-WE-g2E">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rKW-X3-Dca">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                                     <color key="backgroundColor" red="0.9447638988" green="0.95688110589999997" blue="0.95294171569999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 </imageView>
                                             </subviews>
@@ -56,7 +56,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="summaryCell" rowHeight="200" id="pld-GI-fON" customClass="SummaryTableViewCell" customModule="Popcorn_Swirl" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="71.5" width="414" height="200"/>
+                                        <rect key="frame" x="0.0" y="72" width="414" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pld-GI-fON" id="kZT-Cf-o1b">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
@@ -149,10 +149,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteCell" id="SsO-s9-GKG" customClass="NoteTableViewCell" customModule="Popcorn_Swirl" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="271.5" width="414" height="232"/>
+                                        <rect key="frame" x="0.0" y="272" width="414" height="231.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SsO-s9-GKG" id="Hpm-sJ-Cpw">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="232"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="231.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sMR-72-nHb">
@@ -162,7 +162,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="UQp-Fl-UgC">
-                                                    <rect key="frame" x="20" y="37" width="374" height="184"/>
+                                                    <rect key="frame" x="20" y="37" width="374" height="183.5"/>
                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -185,14 +185,15 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recommendedCell" id="ndh-3y-E5o" customClass="RecommendedTableViewCell" customModule="Popcorn_Swirl" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="503.5" width="414" height="198.5"/>
+                                        <rect key="frame" x="0.0" y="503.5" width="414" height="198"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ndh-3y-E5o" id="cRn-0q-vlS">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="198.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="198"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e63-Mg-wAb">
-                                                    <rect key="frame" x="0.0" y="37.5" width="414" height="150"/>
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e63-Mg-wAb">
+                                                    <rect key="frame" x="0.0" y="37" width="414" height="150"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="150" id="9yR-BI-RAR"/>
                                                     </constraints>
@@ -203,19 +204,37 @@
                                                         <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                     </collectionViewFlowLayout>
                                                     <cells>
-                                                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="RV8-AR-698">
+                                                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recommendedCollectionViewCell" id="RV8-AR-698" customClass="RecommendedCollectionViewCell" customModule="Popcorn_Swirl" customModuleProvider="target">
                                                             <rect key="frame" x="10" y="0.0" width="100" height="150"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zkA-9B-JaZ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="150"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
+                                                                <subviews>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Icy-0N-uUM">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="150"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="100" id="SFQ-oI-nzO"/>
+                                                                            <constraint firstAttribute="height" constant="150" id="Sqd-r3-LKC"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstItem="Icy-0N-uUM" firstAttribute="leading" secondItem="zkA-9B-JaZ" secondAttribute="leading" id="5gv-Zc-KYY"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="Icy-0N-uUM" secondAttribute="bottom" id="CnW-GB-Wx1"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="Icy-0N-uUM" secondAttribute="trailing" id="dPo-Lm-wP8"/>
+                                                                    <constraint firstItem="Icy-0N-uUM" firstAttribute="top" secondItem="zkA-9B-JaZ" secondAttribute="top" id="liF-N1-bG6"/>
+                                                                </constraints>
                                                             </collectionViewCellContentView>
                                                             <size key="customSize" width="100" height="150"/>
+                                                            <connections>
+                                                                <outlet property="posterImageView" destination="Icy-0N-uUM" id="DIK-kT-osA"/>
+                                                            </connections>
                                                         </collectionViewCell>
                                                     </cells>
                                                 </collectionView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recommended" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKi-Rm-B2L">
-                                                    <rect key="frame" x="20" y="8" width="374" height="18.5"/>
+                                                    <rect key="frame" x="20" y="8" width="374" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -225,14 +244,17 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="e63-Mg-wAb" secondAttribute="bottom" constant="11" id="0tN-BV-2CU"/>
                                                 <constraint firstAttribute="trailing" secondItem="e63-Mg-wAb" secondAttribute="trailing" id="0yG-N6-8J7"/>
-                                                <constraint firstAttribute="trailing" secondItem="gKi-Rm-B2L" secondAttribute="trailing" constant="20" id="7Zg-Ll-V4u"/>
                                                 <constraint firstItem="e63-Mg-wAb" firstAttribute="leading" secondItem="cRn-0q-vlS" secondAttribute="leading" id="96X-Bf-uZz"/>
                                                 <constraint firstItem="gKi-Rm-B2L" firstAttribute="top" secondItem="cRn-0q-vlS" secondAttribute="top" constant="8" id="OKR-VK-j0Z"/>
-                                                <constraint firstItem="gKi-Rm-B2L" firstAttribute="leading" secondItem="cRn-0q-vlS" secondAttribute="leading" constant="20" id="RZ5-H7-sgE"/>
+                                                <constraint firstItem="gKi-Rm-B2L" firstAttribute="leading" secondItem="cRn-0q-vlS" secondAttribute="leadingMargin" id="jG9-TM-BDR"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="gKi-Rm-B2L" secondAttribute="trailing" id="oQL-lc-x4F"/>
                                                 <constraint firstItem="e63-Mg-wAb" firstAttribute="top" secondItem="gKi-Rm-B2L" secondAttribute="bottom" constant="11" id="zW6-4c-bwO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="recommendedCollectionView" destination="e63-Mg-wAb" id="9V6-Dy-eNf"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

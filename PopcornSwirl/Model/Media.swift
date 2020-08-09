@@ -38,6 +38,7 @@ class Media: MediaBrief {
     var voteCount: Int
     var runtime: Int?
     var releaseDate: String?
+    var recommendations: [MediaBrief]?
     
     var ratingText: String {
         let rating = Int(voteAverage)
@@ -59,7 +60,7 @@ class Media: MediaBrief {
         return yearFormatter.string(from: date)
     }
     
-    init(id: Int, title: String, posterPath: String, backdropPath: String?, overview: String, voteAverage: Double, voteCount: Int, runtime: Int?, releaseDate: String?, notes: String?, bookmark: Bool, viewed: Bool){
+    init(id: Int, title: String, posterPath: String, backdropPath: String?, overview: String, voteAverage: Double, voteCount: Int, runtime: Int?, releaseDate: String?, notes: String?, bookmark: Bool, viewed: Bool, recommendations: [MediaBrief]?){
         
         self.backdropPath = backdropPath
         self.overview = overview
@@ -67,6 +68,7 @@ class Media: MediaBrief {
         self.voteCount = voteCount
         self.runtime = runtime
         self.releaseDate = releaseDate
+        self.recommendations = recommendations
         
         super.init(id: id, title: title, posterPath: posterPath, notes: notes, bookmark: bookmark, viewed: viewed)
     }

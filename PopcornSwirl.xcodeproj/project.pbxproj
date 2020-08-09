@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3E253D4F24ADF26D005376A2 /* NoteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E253D4E24ADF26D005376A2 /* NoteButton.swift */; };
 		3E253D5124AE239D005376A2 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E253D5024AE239D005376A2 /* ListTableViewCell.swift */; };
+		3E57B5EA24DFD4090020FCF7 /* RecommendedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E57B5E924DFD4090020FCF7 /* RecommendedTableViewCell.swift */; };
 		3E586F7724CEEA3F00C2A083 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */; };
 		3E586F7924CEEA6500C2A083 /* SummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */; };
 		3E586F7B24CEEA9000C2A083 /* RecommenedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		3E253D4E24ADF26D005376A2 /* NoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteButton.swift; sourceTree = "<group>"; };
 		3E253D5024AE239D005376A2 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		3E57B5E924DFD4090020FCF7 /* RecommendedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedTableViewCell.swift; sourceTree = "<group>"; };
 		3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryTableViewCell.swift; sourceTree = "<group>"; };
 		3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommenedTableViewCell.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */,
 				3E586F7824CEEA6500C2A083 /* SummaryTableViewCell.swift */,
 				3E586F7E24CEFF1B00C2A083 /* NoteTableViewCell.swift */,
+				3E57B5E924DFD4090020FCF7 /* RecommendedTableViewCell.swift */,
 				3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */,
 				3E586F7C24CEEABA00C2A083 /* AdvertTableViewCell.swift */,
 			);
@@ -271,6 +274,7 @@
 				3EA4ABC724954CB0006214F7 /* PopcornSwirl.xcdatamodeld in Sources */,
 				3EE6AB9A249D6BF10074F19C /* ListTableViewController.swift in Sources */,
 				3E586F7724CEEA3F00C2A083 /* ImageTableViewCell.swift in Sources */,
+				3E57B5EA24DFD4090020FCF7 /* RecommendedTableViewCell.swift in Sources */,
 				3EBF8891249BFA9D007C46B2 /* FilmCollectionViewCell.swift in Sources */,
 				3EBF888B249BEBC2007C46B2 /* Media.swift in Sources */,
 			);

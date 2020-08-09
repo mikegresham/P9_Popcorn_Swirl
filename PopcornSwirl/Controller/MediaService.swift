@@ -58,7 +58,7 @@ class MediaService {
     }
     
     private static func createLookupRequest(id: Int) -> URLRequest{
-          let params = ["api_key": API.apiKey]
+        let params = ["api_key": API.apiKey, "append_to_response": "recommendations"]
         return createRequest(url: URL(string: API.lookupURL + "\(id)")! , params: params)
     }
     private static func createLatestRequest(query: String) -> URLRequest{
@@ -162,6 +162,30 @@ class MediaService {
                     let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                         //Process the results
                     let film = responseJSON
+                    
+                    
+                    let recommendations = film["recommendations"] as! [String : Any]
+                    let results =  recommendations["results"] as? [AnyObject]
+                    var list = [MediaBrief]()
+                    
+                    for i in 0 ..< results!.count {
+                        guard let film = results![i] as? [String: Any] else {
+                            continue
+                        }
+                        if let id = film["id"] as? Int, let title = film["title"] as? String,
+                            let posterPath = film["poster_path"] as? String {
+                            let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            if let managedMedia = DataManager.shared.fetchMedia(id: id) {
+                                mediaBrief.notes = managedMedia.notes
+                                mediaBrief.viewed = managedMedia.viewed
+                                mediaBrief.bookmark = managedMedia.bookmark
+                                print(mediaBrief.viewed)
+                            }
+                            
+                            list.append(mediaBrief)
+                        }
+                    }
+                    print(list.count)
 
                     if  let id = film["id"] as? Int,
                         let title = film["title"] as? String,
@@ -171,7 +195,7 @@ class MediaService {
                         let voteAverage = film["vote_average"] as? Double,
                         let voteCount = film["vote_count"] as? Int,
                         let runtime = film["runtime"] as? Int, let releaseDate = film["release_date"] as? String {
-                        let media = Media(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", backdropPath: "https://image.tmdb.org/t/p/w500\(backdropPath)", overview: overview, voteAverage: voteAverage, voteCount: voteCount, runtime: runtime, releaseDate: releaseDate, notes: nil, bookmark: false, viewed: false)
+                        let media = Media(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", backdropPath: "https://image.tmdb.org/t/p/w500\(backdropPath)", overview: overview, voteAverage: voteAverage, voteCount: voteCount, runtime: runtime, releaseDate: releaseDate, notes: nil, bookmark: false, viewed: false, recommendations: list)
                         completion(true, media)
                     } else {
                         completion(false, nil)
