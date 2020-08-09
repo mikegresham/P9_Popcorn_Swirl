@@ -8,7 +8,14 @@
 
 import Foundation
 import UIKit
+import GoogleMobileAds
 
 class AdvertTableViewCell: UITableViewCell {
     
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+     bannerView.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = .clear
+        self.addSubview(bannerView)
+    }
 }

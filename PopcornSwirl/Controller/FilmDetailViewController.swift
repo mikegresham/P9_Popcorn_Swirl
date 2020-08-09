@@ -8,9 +8,11 @@
 
 import Foundation
 import UIKit
+import GoogleMobileAds
 
 class FilmDetailViewController: UIViewController {
     var indicator = UIActivityIndicatorView()
+    var bannerView: GADBannerView!
 
     @IBOutlet weak var detailTableView: UITableView!
     override func viewDidLoad() {
@@ -42,6 +44,7 @@ class FilmDetailViewController: UIViewController {
         registerForKeyboardNotifications()
         activityIndicator()
         indicator.startAnimating()
+        createBannerView()
     }
     
     func activityIndicator() {
@@ -125,7 +128,7 @@ class FilmDetailViewController: UIViewController {
 }
 extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        4
+        5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -155,6 +158,10 @@ extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.populate(recommendations: media!.recommendations!)
             }
             return cell
+        case 4:
+            let cell = AdvertTableViewCell()
+            cell.addBannerViewToView(bannerView)
+            return cell
         default:
             let cell = detailTableView.dequeueReusableCell(withIdentifier: "recommendedCell") as! RecommendedTableViewCell
             if media != nil {
@@ -167,6 +174,8 @@ extension FilmDetailViewController: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
         case 0:
             return tableView.bounds.height/2
+        case 4:
+            return bannerView.frame.height
         default:
             return tableView.estimatedRowHeight
         }
@@ -200,4 +209,57 @@ extension FilmDetailViewController: UIScrollViewDelegate {
         print(detailTableView.contentOffset)
     }
 }
+extension FilmDetailViewController: GADBannerViewDelegate {
+    
+    func createBannerView() {
+        bannerView = GADBannerView()
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        bannerView.rootViewController = self
+        bannerView.delegate = self
+        bannerView.backgroundColor = .clear
+    }
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView,
+        didFailToReceiveAdWithError error: GADRequestError) {
+      print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
+    override func viewWillTransition(to size: CGSize,
+                            with coordinator: UIViewControllerTransitionCoordinator) {
+      super.viewWillTransition(to:size, with:coordinator)
+      coordinator.animate(alongsideTransition: { _ in
+        self.loadBannerAd()
+      })
+    }
 
+    func loadBannerAd() {
+      // Step 2 - Determine the view width to use for the ad width.
+      let frame = { () -> CGRect in
+        // Here safe area is taken into account, hence the view frame is used
+        // after the view has been laid out.
+        if #available(iOS 11.0, *) {
+          return view.frame.inset(by: view.safeAreaInsets)
+        } else {
+          return view.frame
+        }
+      }()
+      let viewWidth = frame.size.width
+
+      // Step 3 - Get Adaptive GADAdSize and set the ad view.
+      // Here the current interface orientation is used. If the ad is being preloaded
+      // for a future orientation change or different orientation, the function for the
+      // relevant orientation should be used.
+      bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
+
+      // Step 4 - Create an ad request and load the adaptive banner ad.
+      bannerView.load(GADRequest())
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+      super.viewDidAppear(animated)
+      // Note loadBannerAd is called in viewDidAppear as this is the first time that
+      // the safe area is known. If safe area is not a concern (e.g., your app is
+      // locked in portrait mode), the banner can be loaded in viewWillAppear.
+      loadBannerAd()
+    }
+}

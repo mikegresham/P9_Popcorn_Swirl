@@ -35,9 +35,12 @@
 		3EE6ABA724A3F75F0074F19C /* ViewedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE6ABA624A3F75F0074F19C /* ViewedButton.swift */; };
 		3EE6ABAA24A3FF090074F19C /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE6ABA924A3FF090074F19C /* CategoryCollectionViewCell.swift */; };
 		3EE6ABAE24A538FF0074F19C /* AddNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE6ABAD24A538FF0074F19C /* AddNoteViewController.swift */; };
+		6D7D5E89D95CE41912290DDA /* Pods_PopcornSwirl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28C20516CE3083B6FBCB961A /* Pods_PopcornSwirl.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28C20516CE3083B6FBCB961A /* Pods_PopcornSwirl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PopcornSwirl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		39FA29B18F437A38111741C1 /* Pods-PopcornSwirl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopcornSwirl.release.xcconfig"; path = "Target Support Files/Pods-PopcornSwirl/Pods-PopcornSwirl.release.xcconfig"; sourceTree = "<group>"; };
 		3E253D4E24ADF26D005376A2 /* NoteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteButton.swift; sourceTree = "<group>"; };
 		3E253D5024AE239D005376A2 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		3E57B5E924DFD4090020FCF7 /* RecommendedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedTableViewCell.swift; sourceTree = "<group>"; };
@@ -68,6 +71,7 @@
 		3EE6ABA624A3F75F0074F19C /* ViewedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewedButton.swift; sourceTree = "<group>"; };
 		3EE6ABA924A3FF090074F19C /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		3EE6ABAD24A538FF0074F19C /* AddNoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNoteViewController.swift; sourceTree = "<group>"; };
+		E2B41278CA5D2BA13D75DC99 /* Pods-PopcornSwirl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PopcornSwirl.debug.xcconfig"; path = "Target Support Files/Pods-PopcornSwirl/Pods-PopcornSwirl.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D7D5E89D95CE41912290DDA /* Pods_PopcornSwirl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +104,8 @@
 			children = (
 				3EA4ABBB24954CB0006214F7 /* PopcornSwirl */,
 				3EA4ABBA24954CB0006214F7 /* Products */,
+				83AC15A970F533214E50E8CC /* Pods */,
+				97BA424D4BBFD4D4444D6421 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,6 +188,24 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		83AC15A970F533214E50E8CC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E2B41278CA5D2BA13D75DC99 /* Pods-PopcornSwirl.debug.xcconfig */,
+				39FA29B18F437A38111741C1 /* Pods-PopcornSwirl.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		97BA424D4BBFD4D4444D6421 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28C20516CE3083B6FBCB961A /* Pods_PopcornSwirl.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -188,9 +213,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3EA4ABD024954CB3006214F7 /* Build configuration list for PBXNativeTarget "PopcornSwirl" */;
 			buildPhases = (
+				5C828C33F449BD51C716DC73 /* [CP] Check Pods Manifest.lock */,
 				3EA4ABB524954CB0006214F7 /* Sources */,
 				3EA4ABB624954CB0006214F7 /* Frameworks */,
 				3EA4ABB724954CB0006214F7 /* Resources */,
+				DCFD23E05F5D4B5DDEB32C76 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -246,6 +273,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5C828C33F449BD51C716DC73 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PopcornSwirl-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DCFD23E05F5D4B5DDEB32C76 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PopcornSwirl/Pods-PopcornSwirl-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PopcornSwirl/Pods-PopcornSwirl-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PopcornSwirl/Pods-PopcornSwirl-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3EA4ABB524954CB0006214F7 /* Sources */ = {
@@ -418,6 +487,7 @@
 		};
 		3EA4ABD124954CB3006214F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2B41278CA5D2BA13D75DC99 /* Pods-PopcornSwirl.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -436,6 +506,7 @@
 		};
 		3EA4ABD224954CB3006214F7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39FA29B18F437A38111741C1 /* Pods-PopcornSwirl.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

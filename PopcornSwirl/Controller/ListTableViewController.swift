@@ -136,7 +136,7 @@ class ListTableViewController: UITableViewController {
             let filmDetailViewController = segue.destination as! FilmDetailViewController
             let cell = sender as! ListTableViewCell
             let indexPath = tableView.indexPath(for: cell)
-            filmDetailViewController.mediaID = mediaList[indexPath!.row].id
+            filmDetailViewController.mediaID = filteredList[indexPath!.row].id
         }
     }
 }
