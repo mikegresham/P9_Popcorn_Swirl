@@ -10,8 +10,8 @@ import Foundation
 import CoreData
 
 
-class ManagedMedia: NSManagedObject {
-    static var entityName: String { return "ManagedMedia" }
+class ManagedFilm: NSManagedObject {
+    static var entityName: String { return "ManagedFilm" }
     
     // Attributes
     @NSManaged var id: Int

@@ -12,11 +12,11 @@ import UIKit
 class RecommendedCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var posterImageView: UIImageView!
-    var media: MediaBrief?
+    var film: FilmBrief?
     
-    func populate(media: MediaBrief) {
-        self.media = media
-        if let imageURL = URL(string: media.posterPath) {
+    func populate(film: FilmBrief) {
+        self.film = film
+        if let imageURL = URL(string: film.posterPath) {
             MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
                 if success, let imageData = imageData,
                     let artwork = UIImage(data: imageData) {

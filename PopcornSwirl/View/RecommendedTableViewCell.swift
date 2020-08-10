@@ -11,7 +11,7 @@ import UIKit
 
 class RecommendedTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var recommendations: [MediaBrief]?
+    var recommendations: [FilmBrief]?
     
     @IBOutlet weak var recommendedCollectionView: UICollectionView!
     
@@ -25,7 +25,7 @@ class RecommendedTableViewCell: UITableViewCell, UICollectionViewDelegate, UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = recommendedCollectionView.dequeueReusableCell(withReuseIdentifier: "recommendedCollectionViewCell", for: indexPath) as! RecommendedCollectionViewCell
-        cell.populate(media: recommendations![indexPath.row])
+        cell.populate(film: recommendations![indexPath.row])
         return cell
     }
     
@@ -37,7 +37,7 @@ class RecommendedTableViewCell: UITableViewCell, UICollectionViewDelegate, UICol
         
     }
     
-    func populate(recommendations: [MediaBrief]) {
+    func populate(recommendations: [FilmBrief]) {
         self.recommendations = recommendations
         recommendedCollectionView.reloadData()
     }

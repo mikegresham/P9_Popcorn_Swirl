@@ -20,63 +20,63 @@ class DataManager {
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.newBackgroundContext()
-        entity = NSEntityDescription.entity(forEntityName: "ManagedMedia", in: context)
+        entity = NSEntityDescription.entity(forEntityName: "ManagedFilm", in: context)
     }
     
-    // Create
-    lazy var mediaList: [MediaBrief] = {
-        var list = [MediaBrief]()
+    // MARK: Create
+    lazy var filmList: [FilmBrief] = {
+        var list = [FilmBrief]()
         
-        for i in 0 ..< 40 {
-            var media = MediaBrief(id: 00000000, title: "Movie", posterPath: "https://critics.io/img/movies/poster-placeholder.png", notes: nil, bookmark: false, viewed: false)
-            list.append(media)
+        for i in 0 ..< 20 {
+            var film = FilmBrief(id: 00000000, title: "Movie", posterPath: "https://critics.io/img/movies/poster-placeholder.png", notes: nil, bookmark: false, viewed: false)
+            list.append(film)
         }
         return list
     } ()
     
-    lazy var genreList: [MediaGenre] = {
-        var list = [MediaGenre]()
+    lazy var genreList: [FilmGenre] = {
+        var list = [FilmGenre]()
         
-        var genre = MediaGenre.init(id: 0, name: "Latest")
+        var genre = FilmGenre.init(id: 0, name: "Latest")
         list.append(genre)
         return list
     } ()
     
-    func createMedia(id: Int, bookmark: Bool, viewed: Bool, notes: String?) {
-        let newMedia = NSEntityDescription.insertNewObject(forEntityName: ManagedMedia.entityName, into: context) as! ManagedMedia
-        newMedia.id = id
-        newMedia.bookmark = bookmark
-        newMedia.viewed = viewed
+    func createFilm(id: Int, bookmark: Bool, viewed: Bool, notes: String?) {
+        let newFilm = NSEntityDescription.insertNewObject(forEntityName: ManagedFilm.entityName, into: context) as! ManagedFilm
+        newFilm.id = id
+        newFilm.bookmark = bookmark
+        newFilm.viewed = viewed
         if notes != nil {
-            newMedia.notes = notes!
+            newFilm.notes = notes!
         } else {
-            newMedia.notes = ""
+            newFilm.notes = ""
         }
     saveContext()
     }
     
-    // Read
+    // MARK: Read
     
-    func fetchMedia(id: Int) -> ManagedMedia? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedMedia.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedMedia.id), id as CVarArg)
+    func fetchFilm(id: Int) -> ManagedFilm? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedFilm.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedFilm.id), id as CVarArg)
         fetchRequest.returnsObjectsAsFaults = false
         do {
-            let result = try context.fetch(fetchRequest) as! [ManagedMedia]
+            let result = try context.fetch(fetchRequest) as! [ManagedFilm]
             return result.first
-        } catch { print("Fetch on media id: \(id) failed. \(error)")}
+        } catch { print("Fetch on film id: \(id) failed. \(error)")}
         return nil
     }
     
-    func fetchMediaHistory() -> [ManagedMedia]? {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: ManagedMedia.entityName)
+    func fetchFilmHistory() -> [ManagedFilm]? {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: ManagedFilm.entityName)
         
         let sectionSortDescriptor = NSSortDescriptor(key: "lastModified", ascending: true)
         fetchRequest.sortDescriptors = [sectionSortDescriptor]
         
         fetchRequest.returnsObjectsAsFaults = false
         do {
-            let result = try context.fetch(fetchRequest) as! [ManagedMedia]
+            let result = try context.fetch(fetchRequest) as! [ManagedFilm]
             return result
         }
         catch {
@@ -85,55 +85,53 @@ class DataManager {
         return nil
     }
     
-    // Update
+    // MARK: Update
     
-    func updateMedia(media: MediaBrief) {
-        if media.viewed != false || media.bookmark != false || media.notes != "" {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedMedia.entityName)
-            request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedMedia.id), media.id as CVarArg)
+    func updateFilm(film: FilmBrief) {
+        if film.viewed != false || film.bookmark != false || film.notes != "" {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedFilm.entityName)
+            request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedFilm.id), film.id as CVarArg)
              do {
                  let result = try context.fetch(request)
-                 if let returnedResult = result as? [ManagedMedia] {
+                 if let returnedResult = result as? [ManagedFilm] {
                      if returnedResult.count != 0 {
-                         let managedMedia = returnedResult.first!
-                        managedMedia.viewed = media.viewed
-                        managedMedia.bookmark = media.bookmark
-                        if media.notes != nil{
-                            managedMedia.notes = media.notes!
+                         let managedFilm = returnedResult.first!
+                        managedFilm.viewed = film.viewed
+                        managedFilm.bookmark = film.bookmark
+                        if film.notes != nil{
+                            managedFilm.notes = film.notes!
                         } else {
-                            managedMedia.notes = ""
+                            managedFilm.notes = ""
                         }
-                        managedMedia.lastModified = Date.init()
-                         //fetchedGoal.tasks = goal.tasks
+                        managedFilm.lastModified = Date.init()
                          saveContext()
                      } else {
-                        print("Fetch result was empty for specified media id: \(media.id)")
+                        print("Fetch result was empty for specified film id: \(film.id)")
                         
-                        self.createMedia(id: media.id, bookmark: media.bookmark, viewed: media.viewed, notes: media.notes)
-                        print("Created new media: \(media.id)")
+                        self.createFilm(id: film.id, bookmark: film.bookmark, viewed: film.viewed, notes: film.notes)
+                        print("Created new film: \(film.id)")
                     }
                  }
             } catch {
                 }
         } else {
-            deleteMedia(for: media.id)
+            deleteFilm(for: film.id)
         }
         
     }
     
     
-    // Delete
+    // MARK: Delete
     
-    func deleteMedia(for id: Int) {
-        print("hi")
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedMedia.entityName)
-        request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedMedia.id), id as CVarArg)
+    func deleteFilm(for id: Int) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedFilm.entityName)
+        request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedFilm.id), id as CVarArg)
         request.returnsObjectsAsFaults = false
         do {
-            let result = try context.fetch(request) as! [ManagedMedia]
+            let result = try context.fetch(request) as! [ManagedFilm]
             context.delete(result.first!)
         } catch {
-            print("Failed to delted media with id:\(id)")
+            print("Failed to delted film with id:\(id)")
         }
         saveContext()
     }

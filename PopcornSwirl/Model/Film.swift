@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MediaBrief {
+class FilmBrief {
     //Attributes
     var id: Int
     var posterPath: String
@@ -31,14 +31,14 @@ class MediaBrief {
     }
 }
 
-class Media: MediaBrief {
+class Film: FilmBrief {
     var backdropPath: String?
     var overview: String
     var voteAverage: Double
     var voteCount: Int
     var runtime: Int?
     var releaseDate: String?
-    var recommendations: [MediaBrief]?
+    var recommendations: [FilmBrief]?
     
     var ratingText: String {
         let rating = Int(voteAverage)
@@ -60,7 +60,7 @@ class Media: MediaBrief {
         return yearFormatter.string(from: date)
     }
     
-    init(id: Int, title: String, posterPath: String, backdropPath: String?, overview: String, voteAverage: Double, voteCount: Int, runtime: Int?, releaseDate: String?, notes: String?, bookmark: Bool, viewed: Bool, recommendations: [MediaBrief]?){
+    init(id: Int, title: String, posterPath: String, backdropPath: String?, overview: String, voteAverage: Double, voteCount: Int, runtime: Int?, releaseDate: String?, notes: String?, bookmark: Bool, viewed: Bool, recommendations: [FilmBrief]?){
         
         self.backdropPath = backdropPath
         self.overview = overview
@@ -86,7 +86,7 @@ class Media: MediaBrief {
     }()
 }
 
-class MediaGenre {
+class FilmGenre {
     var id: Int?
     var name: String?
     

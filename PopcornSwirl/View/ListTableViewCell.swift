@@ -11,6 +11,8 @@ import UIKit
 
 class ListTableViewCell : UITableViewCell {
     
+    // MARK: IBOutlets
+    
     @IBOutlet weak var artworkImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -18,14 +20,17 @@ class ListTableViewCell : UITableViewCell {
     @IBOutlet weak var viewedButton: UIButton!
     @IBOutlet weak var notesButton: UIButton!
     
+    //MARK: Global Variables
+    
     var mediaId = Int()
     
+    //MARK: Setup
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
-    func populate(media: Media) {
+    func populate(media: Film) {
         self.titleLabel.text = media.title
         self.descriptionLabel.text = media.overview
         self.bookmarkButton.isSelected = media.bookmark == true ? true : false
@@ -37,5 +42,4 @@ class ListTableViewCell : UITableViewCell {
     func setImage(image: UIImage){
         self.artworkImageView.image = image
     }
-    
 }

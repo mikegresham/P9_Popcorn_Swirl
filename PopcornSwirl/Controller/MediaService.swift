@@ -12,6 +12,7 @@ import Foundation
 class MediaService {
     
     private static let responseMessages = [
+        // Response messages for URLSession Debugging
         200: "Success.",
         201: "The item/record was updated successfully.",
         400: "Validation failed.",
@@ -45,7 +46,7 @@ class MediaService {
     
     
     private static func createRequest(url: URL, params: [String: Any]) -> URLRequest{
-    
+        //Function to create URL Request
         let body = params.map{ "\($0)=\($1)" }.joined(separator: "&")
         var request = URLRequest(url: URL(string: "\(url)?\(body)")!)
         request.httpMethod = "GET"
@@ -61,20 +62,21 @@ class MediaService {
         let params = ["api_key": API.apiKey, "append_to_response": "recommendations"]
         return createRequest(url: URL(string: API.lookupURL + "\(id)")! , params: params)
     }
-    private static func createLatestRequest(query: String) -> URLRequest{
-        let params = ["api_key": API.apiKey]
+    private static func createLatestRequest(query: String, page: Int) -> URLRequest{
+        let params = ["api_key": API.apiKey, "page": page ] as [String : Any]
       return createRequest(url: URL(string: API.lookupURL + "\(query)")! , params: params)
     }
     private static func createGenreListRequest() -> URLRequest{
         let params = ["api_key": API.apiKey]
       return createRequest(url: URL(string: API.genreListURL)! , params: params)
     }
-    private static func createGenreRequest(genre: Int) -> URLRequest{
-        let params = ["api_key": API.apiKey, "with_genres": genre, "language": "en-UK", "include_adult": "false", "sort_by": "popularity.desc", "page": "1"] as [String : Any]
+    private static func createGenreRequest(genre: Int, page: Int) -> URLRequest{
+        let params = ["api_key": API.apiKey, "with_genres": genre, "language": "en-UK", "include_adult": "false", "sort_by": "popularity.desc", "page": page] as [String : Any]
       return createRequest(url: URL(string: API.genreURL)! , params: params)
     }
     
-    static func getGenreList(completion: @escaping (Bool, [MediaGenre]?) -> Void){
+    static func getGenreList(completion: @escaping (Bool, [FilmGenre]?) -> Void){
+        // Function to return list of genres.
         let session = URLSession(configuration: .default)
         let request = createGenreListRequest()
         
@@ -85,14 +87,14 @@ class MediaService {
                     let results = responseJSON["genres"] as? [AnyObject] {
                         //Process the results
 
-                        var list = [MediaGenre]()
+                        var list = [FilmGenre]()
                     for i in 0 ..< results.count {
                         guard let genre = results[i] as? [String: Any] else {
                             continue
                         }
                         if let id = genre["id"] as? Int,
                             let name = genre["name"] as? String {
-                            let mediaGenre = MediaGenre(id: id, name: name)
+                            let mediaGenre = FilmGenre(id: id, name: name)
                             
                             list.append(mediaGenre)
                         }
@@ -111,7 +113,8 @@ class MediaService {
         
     }
     
-    static func getMediaList(query: String, completion: @escaping (Bool, [MediaBrief]?) -> Void) {
+    static func getFilmList(query: String, completion: @escaping (Bool, [FilmBrief]?) -> Void) {
+        // Function to return list of films.
         let session = URLSession(configuration: .default)
         let request = createSearchRequest(query: query)
 
@@ -122,7 +125,7 @@ class MediaService {
                     let results = responseJSON["results"] as? [AnyObject] {
                         //Process the results
 
-                        var list = [MediaBrief]()
+                        var list = [FilmBrief]()
                     for i in 0 ..< results.count {
                         guard let film = results[i] as? [String: Any] else {
                             continue
@@ -130,23 +133,23 @@ class MediaService {
                         if let id = film["id"] as? Int,
                             let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
-                            let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
-                                if let managedMedia = DataManager.shared.fetchMedia(id: id) {
-                                mediaBrief.notes = managedMedia.notes
-                                mediaBrief.viewed = managedMedia.viewed
-                                mediaBrief.bookmark = managedMedia.bookmark
+                            let filmBrief = FilmBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            
+                                //Check if film is in coreData
+                                if let managedMedia = DataManager.shared.fetchFilm(id: id) {
+                                    filmBrief.notes = managedMedia.notes
+                                    filmBrief.viewed = managedMedia.viewed
+                                    filmBrief.bookmark = managedMedia.bookmark
                                 }
-                            list.append(mediaBrief)
+                            list.append(filmBrief)
                         }
                         
                     }
-
                     completion(true, list)
                 } else if let response = response as? HTTPURLResponse {
                     print(responseMessages[response.statusCode]!)
                     completion(false, nil)
                 }
-                
             } else {
                 completion(false, nil)
             }
@@ -154,23 +157,24 @@ class MediaService {
         task.resume()
     }
     
-    static func getMedia(id: Int, completion: @escaping (Bool, Media?) -> Void) {
+    static func getFilm(id: Int, completion: @escaping (Bool, Film?) -> Void) {
+        //Function to return film for ID
         let session = URLSession(configuration: .default)
         let request = createLookupRequest(id: id)
 
         let task = session.dataTask(with: request) { (data, response, error) in
             if let data = data, error == nil {
 
-
                 if let response = response as? HTTPURLResponse, response.statusCode == 200,
                     let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
                         //Process the results
                     let film = responseJSON
-                    
+
+                    // Get list ofRecommendations
                     
                     let recommendations = film["recommendations"] as! [String : Any]
                     let results =  recommendations["results"] as? [AnyObject]
-                    var list = [MediaBrief]()
+                    var list = [FilmBrief]()
                     
                     for i in 0 ..< results!.count {
                         guard let film = results![i] as? [String: Any] else {
@@ -178,13 +182,14 @@ class MediaService {
                         }
                         if let id = film["id"] as? Int, let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
-                            let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            let filmBrief = FilmBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
 
-                            
-                            list.append(mediaBrief)
+                            list.append(filmBrief)
                         }
                     }
-
+                    
+                    // Get Other film details.
+                    
                     if  let id = film["id"] as? Int,
                         let title = film["title"] as? String,
                         let posterPath = film["poster_path"] as? String,
@@ -193,14 +198,14 @@ class MediaService {
                         let voteAverage = film["vote_average"] as? Double,
                         let voteCount = film["vote_count"] as? Int,
                         let runtime = film["runtime"] as? Int, let releaseDate = film["release_date"] as? String {
-                        let media = Media(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", backdropPath: "https://image.tmdb.org/t/p/w500\(backdropPath)", overview: overview, voteAverage: voteAverage, voteCount: voteCount, runtime: runtime, releaseDate: releaseDate, notes: nil, bookmark: false, viewed: false, recommendations: list)
-                        if let managedMedia = DataManager.shared.fetchMedia(id: id) {
-                            media.notes = managedMedia.notes
-                            media.viewed = managedMedia.viewed
-                            media.bookmark = managedMedia.bookmark
+                        let film = Film(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", backdropPath: "https://image.tmdb.org/t/p/w500\(backdropPath)", overview: overview, voteAverage: voteAverage, voteCount: voteCount, runtime: runtime, releaseDate: releaseDate, notes: nil, bookmark: false, viewed: false, recommendations: list)
+                        // Check if movie is in coredata
+                        if let managedMedia = DataManager.shared.fetchFilm(id: id) {
+                            film.notes = managedMedia.notes
+                            film.viewed = managedMedia.viewed
+                            film.bookmark = managedMedia.bookmark
                         }
-                        
-                        completion(true, media)
+                        completion(true, film)
                     } else {
                         completion(false, nil)
                     }
@@ -217,6 +222,7 @@ class MediaService {
     }
     
     static func getImage(imageURL: URL, completion: @escaping (Bool, Data?) -> Void) {
+        //Function to return image date from URL
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: imageURL) { (data, response, error) in
             if let data = data, error == nil,
@@ -231,9 +237,10 @@ class MediaService {
         task.resume()
     }
     
-    static func getLatestMediaList(query: String, completion: @escaping (Bool, [MediaBrief]?) -> Void) {
+    static func getLatestMediaList(query: String, page: Int, completion: @escaping (Bool, [FilmBrief]?) -> Void) {
+        // Function ro reutrn 
         let session = URLSession(configuration: .default)
-        let request = createLatestRequest(query: query)
+        let request = createLatestRequest(query: query, page: page)
 
         let task = session.dataTask(with: request) { (data, response, error) in
             if let data = data, error == nil {
@@ -242,22 +249,22 @@ class MediaService {
                     let results = responseJSON["results"] as? [AnyObject] {
                         //Process the results
 
-                        var list = [MediaBrief]()
+                        var list = [FilmBrief]()
                     for i in 0 ..< results.count {
                         guard let film = results[i] as? [String: Any] else {
                             continue
                         }
                         if let id = film["id"] as? Int, let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
-                            let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
-                            if let managedMedia = DataManager.shared.fetchMedia(id: id) {
-                                mediaBrief.notes = managedMedia.notes
-                                mediaBrief.viewed = managedMedia.viewed
-                                mediaBrief.bookmark = managedMedia.bookmark
-                                print(mediaBrief.viewed)
+                            let filmBrief = FilmBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            //Check if movie is in coreData
+                            if let managedFilm = DataManager.shared.fetchFilm(id: id) {
+                                filmBrief.notes = managedFilm.notes
+                                filmBrief.viewed = managedFilm.viewed
+                                filmBrief.bookmark = managedFilm.bookmark
                             }
                             
-                            list.append(mediaBrief)
+                            list.append(filmBrief)
                         }
                         
                     }
@@ -266,7 +273,6 @@ class MediaService {
                     print(responseMessages[response.statusCode]!)
                     completion(false, nil)
                 }
-                
             } else {
                 completion(false, nil)
             }
@@ -274,9 +280,11 @@ class MediaService {
         task.resume()
     }
     
-    static func getGenreMediaList(id: Int, completion: @escaping (Bool, [MediaBrief]?) -> Void) {
+    static func getGenreMediaList(id: Int, page: Int, completion: @escaping (Bool, [FilmBrief]?) -> Void) {
+        // Function to return list of films for selected genre
+        print(page)
         let session = URLSession(configuration: .default)
-        let request = createGenreRequest(genre: id)
+        let request = createGenreRequest(genre: id, page: page)
 
         let task = session.dataTask(with: request) { (data, response, error) in
             if let data = data, error == nil {
@@ -285,15 +293,16 @@ class MediaService {
                     let results = responseJSON["results"] as? [AnyObject] {
                         //Process the results
 
-                        var list = [MediaBrief]()
-                    for i in 0 ..< results.count {
+                        var list = [FilmBrief]()
+                        for i in 0 ..< results.count {
                         guard let film = results[i] as? [String: Any] else {
                             continue
                         }
                         if let id = film["id"] as? Int, let title = film["title"] as? String,
                             let posterPath = film["poster_path"] as? String {
-                            let mediaBrief = MediaBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
-                            if let managedMedia = DataManager.shared.fetchMedia(id: id) {
+                            let mediaBrief = FilmBrief(id: id, title: title, posterPath: "https://image.tmdb.org/t/p/w500\(posterPath)", notes: nil, bookmark: false, viewed: false)
+                            //Check if film is in core data
+                            if let managedMedia = DataManager.shared.fetchFilm(id: id) {
                                 mediaBrief.notes = managedMedia.notes
                                 mediaBrief.viewed = managedMedia.viewed
                                 mediaBrief.bookmark = managedMedia.bookmark

@@ -11,17 +11,13 @@ import UIKit
 
 class ListTableViewController: UITableViewController {
     
-    var mediaList = [Media]()
-    var filteredList = [Media]()
+    // MARK: Global Variables
+    
+    var mediaList = [Film]()
+    var filteredList = [Film]()
     var indicator = UIActivityIndicatorView()
 
-    func activityIndicator() {
-        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        indicator.style = UIActivityIndicatorView.Style.medium
-        indicator.center = self.view.center
-        indicator.hidesWhenStopped = true
-        self.view.addSubview(indicator)
-    }
+    // MARK: Setup
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +26,7 @@ class ListTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        overrideUserInterfaceStyle = .dark
         loadData()
     }
     
@@ -46,12 +43,20 @@ class ListTableViewController: UITableViewController {
         }
     }
     
+    func activityIndicator() {
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.center = self.view.center
+        indicator.hidesWhenStopped = true
+        self.view.addSubview(indicator)
+    }
+    
     func loadData() {
         indicator.startAnimating()
         mediaList.removeAll()
-        let managedMediaList = DataManager.shared.fetchMediaHistory()!
+        let managedMediaList = DataManager.shared.fetchFilmHistory()!
         for managedMedia in managedMediaList {
-            MediaService.getMedia(id: managedMedia.id) { (success, media) in
+            MediaService.getFilm(id: managedMedia.id) { (success, media) in
                 if success, let media = media {
                     media.viewed = managedMedia.viewed
                     media.bookmark = managedMedia.bookmark
@@ -70,6 +75,7 @@ class ListTableViewController: UITableViewController {
     }
     
     func filterData() {
+        // Function to filter list depending on which tab the user is on.
         let selectedIndex = tabBarController!.selectedIndex
         print("Index: \(selectedIndex)")
         switch selectedIndex {
@@ -82,6 +88,7 @@ class ListTableViewController: UITableViewController {
         }
     }
     
+    // MARK: TableView Delegates and Datasource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredList.count
@@ -122,11 +129,12 @@ class ListTableViewController: UITableViewController {
     }
     
     func deleteItem(at indexPath: IndexPath) {
+        // Deletes row in tableview
         tableView.beginUpdates()
         let cell = tableView.cellForRow(at: indexPath) as! ListTableViewCell
-        DataManager.shared.deleteMedia(for: cell.mediaId)
-        mediaList.removeAll(where: {( $0.id == cell.mediaId)})
-        filteredList.removeAll(where: {( $0.id == cell.mediaId)})
+        DataManager.shared.deleteFilm(for: cell.mediaId) // Deletes Film from CoreData
+        mediaList.removeAll(where: {( $0.id == cell.mediaId)}) // Remove film from Array
+        filteredList.removeAll(where: {( $0.id == cell.mediaId)}) // Remove film from Array
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -136,7 +144,7 @@ class ListTableViewController: UITableViewController {
             let filmDetailViewController = segue.destination as! FilmDetailViewController
             let cell = sender as! ListTableViewCell
             let indexPath = tableView.indexPath(for: cell)
-            filmDetailViewController.mediaID = filteredList[indexPath!.row].id
+            filmDetailViewController.filmID = filteredList[indexPath!.row].id
         }
     }
 }

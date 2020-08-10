@@ -11,40 +11,57 @@ import UIKit
 
 class AddNoteViewController: UIViewController {
     
+    // MARK: IBOutlets & IBActions
+    
     @IBOutlet weak var artworkView: UIImageView!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var movieTitleLabel: UILabel!
-    
     @IBOutlet weak var doneButton: UIButton!
     
     @IBAction func dismissButton(_ sender: Any) {
+        //Dismiss View Controller, and return to films view controller. Assumes no changes want to be saved.
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func doneButtonAction(_ sender: Any) {
-        mediaBrief?.notes = noteTextView.text == "" ? nil : noteTextView.text
-        DataManager.shared.updateMedia(media: mediaBrief!)
-        if noteTextView.text != nil && noteTextView.text != "Tap to add note..." {
-            DataManager.shared.mediaList.first(where: {($0.id == mediaBrief!.id)})?.notes = noteTextView.text
+        // Function to save any changes to movie notes.
+        filmBrief?.notes = noteTextView.text == "" || noteTextView.text == "Tap to add note..." ? nil : noteTextView.text
+        
+        // Save changes to CoreData model
+        if filmBrief?.notes != nil {
+            DataManager.shared.updateFilm(film: filmBrief!)
+            DataManager.shared.filmList.first(where: {($0.id == filmBrief!.id)})?.notes = noteTextView.text
         }
         self.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: Global Variables
     
-    var mediaBrief: MediaBrief?
+    var filmBrief: FilmBrief?
+    
+    // MARK: Setup
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        config()
+    }
+    
+    func config() {
+        // Customer UI style
         overrideUserInterfaceStyle = .dark
+        
+        //Load film details.
         populate()
+        
+        //Show Keyboard
         noteTextView.becomeFirstResponder()
         noteTextView.delegate = self
         doneButton.isEnabled = false
-        
-        
     }
+    
     func populate() {
-        self.movieTitleLabel.text = mediaBrief?.title
-        if let imageURL = URL(string: mediaBrief!.posterPath) {
+        // Function to show movie data (title, image, and any notes)
+        self.movieTitleLabel.text = filmBrief?.title
+        if let imageURL = URL(string: filmBrief!.posterPath) {
             MediaService.getImage(imageURL: imageURL, completion: { (success, imageData) in
                 if success, let imageData = imageData,
                     let artwork = UIImage(data: imageData) {
@@ -55,12 +72,14 @@ class AddNoteViewController: UIViewController {
                 
             })
         }
-        if let note = DataManager.shared.fetchMedia(id: mediaBrief!.id)?.notes {
+        // Check if there are already notes for movie
+        if let note = DataManager.shared.fetchFilm(id: filmBrief!.id)?.notes {
             noteTextView.text = note
         }
     }
     
 }
+
 //MARK: Text View Interactions
 extension AddNoteViewController: UITextViewDelegate {
     
@@ -80,15 +99,13 @@ extension AddNoteViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
-            //Placeholder text for goal
-            textView.text = "Add your thoughts here..."
-        } else {
-            //Update Goal
+            //Placeholder text for note
+            textView.text = "Tap to add note..."
         }
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
         //If placeholder text, set to blank
-        if textView.text == "Add your thoughts here..." {
+        if textView.text == "Tap to add note..." {
             textView.text = ""
         }
     }

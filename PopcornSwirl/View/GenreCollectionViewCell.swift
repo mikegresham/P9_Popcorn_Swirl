@@ -9,23 +9,29 @@
 import Foundation
 import UIKit
 
-protocol CategoryCollectionViewCellDelegate{
-    func updateGenre(genre: MediaGenre)
+protocol GenreCollectionViewCellDelegate{
+    func updateGenre(genre: FilmGenre)
 }
 
-class CategoryCollectionViewCell: UICollectionViewCell {
-    var delegate: CategoryCollectionViewCellDelegate?
+class GenreCollectionViewCell: UICollectionViewCell {
+    
+    //MARK: Global Variables
+    
+    var delegate: GenreCollectionViewCellDelegate?
+    var selectedGenre = String()
+
+    
+    //MARK: IBOutlets
     
     @IBOutlet weak var genreTextField: UITextField!
     
-    var selectedGenre = String()
+    //MARK: Setup
     
     override func awakeFromNib() {
         super.awakeFromNib()
         let genrePicker = UIPickerView()
         genrePicker.delegate = self
         genrePicker.dataSource = self
-        
         genreTextField.tintColor = .clear
         genreTextField.inputView = genrePicker
         createToolBar()
@@ -40,7 +46,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(CategoryCollectionViewCell.dismissKeyBoard))
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(GenreCollectionViewCell.dismissKeyBoard))
         
         toolBar.setItems([doneButton], animated: true)
         toolBar.isUserInteractionEnabled = true
@@ -55,7 +61,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
 }
 
-extension CategoryCollectionViewCell: UIPickerViewDelegate, UIPickerViewDataSource {
+extension GenreCollectionViewCell: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
