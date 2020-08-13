@@ -63,7 +63,7 @@ class ListTableViewController: UITableViewController {
                     media.notes = managedMedia.notes
                     self.mediaList.append(media)
                 } else {
-                    //self.presentNoDataAlert(title: "Oops...", message: "No Data")
+                    self.presentNoDataAlert(title: "Oops...", message: "No Data")
                 }
                 DispatchQueue.main.async {
                     self.filterData()
@@ -86,6 +86,14 @@ class ListTableViewController: UITableViewController {
         default:
             filteredList = mediaList
         }
+    }
+    
+    func presentNoDataAlert(title: String?, message: String?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Got it!", style: .cancel, handler: {(action) -> Void in
+        })
+        alertController.addAction(dismissAction)
+        present(alertController, animated: true)
     }
     
     // MARK: TableView Delegates and Datasource

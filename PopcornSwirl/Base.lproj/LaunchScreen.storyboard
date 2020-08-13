@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -20,8 +20,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <tabBarItem title="Films" image="rectangle.stack.fill" catalog="system" id="t0k-Iy-XgG"/>
-                                    <tabBarItem title="Search" image="magnifyingglass" catalog="system" id="pmZ-1D-7Gd"/>
-                                    <tabBarItem title="List" image="list.dash" catalog="system" id="NXP-dw-OKf"/>
+                                    <tabBarItem title="Viewed" image="eye.fill" catalog="system" id="pmZ-1D-7Gd"/>
+                                    <tabBarItem title="Bookmarked" image="bookmark.fill" catalog="system" id="NXP-dw-OKf"/>
                                 </items>
                             </tabBar>
                         </subviews>
@@ -42,8 +42,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="list.dash" catalog="system" width="128" height="85"/>
-        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="bookmark.fill" catalog="system" width="112" height="128"/>
+        <image name="eye.fill" catalog="system" width="128" height="78"/>
         <image name="rectangle.stack.fill" catalog="system" width="128" height="122"/>
     </resources>
 </document>

@@ -37,6 +37,7 @@ class FilmsViewController: UIViewController {
 
         // Reload films data
         DispatchQueue.main.async {
+            self.setGenre(genre: self.selectedGenre!)
             self.filmsCollectionView.reloadData()
         }
     }

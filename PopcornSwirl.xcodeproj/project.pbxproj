@@ -82,7 +82,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3E586F7524CEEA2F00C2A083 /* New Group */ = {
+		3E586F7524CEEA2F00C2A083 /* Film Detail Cells */ = {
 			isa = PBXGroup;
 			children = (
 				3E586F7624CEEA3F00C2A083 /* ImageTableViewCell.swift */,
@@ -92,7 +92,7 @@
 				3E586F7A24CEEA9000C2A083 /* RecommenedTableViewCell.swift */,
 				3E586F7C24CEEABA00C2A083 /* AdvertTableViewCell.swift */,
 			);
-			name = "New Group";
+			name = "Film Detail Cells";
 			sourceTree = "<group>";
 		};
 		3EA4ABB024954CB0006214F7 = {
@@ -137,7 +137,7 @@
 		3EA4ABD424956EEC006214F7 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3E586F7524CEEA2F00C2A083 /* New Group */,
+				3E586F7524CEEA2F00C2A083 /* Film Detail Cells */,
 				3EE6ABA324A3F7150074F19C /* Buttons */,
 				3EA4ABC224954CB0006214F7 /* Main.storyboard */,
 				3EBF8890249BFA9D007C46B2 /* FilmCollectionViewCell.swift */,
