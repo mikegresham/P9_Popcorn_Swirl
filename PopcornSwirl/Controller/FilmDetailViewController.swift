@@ -21,7 +21,7 @@ class FilmDetailViewController: UIViewController {
     
     var indicator = UIActivityIndicatorView()
     var bannerView: GADBannerView!
-    var filmID: Int!
+    var filmID: Int?
     private var film: Film?
     
     //MARK: Setup
@@ -31,20 +31,23 @@ class FilmDetailViewController: UIViewController {
         config()
         
         // Load Film for selected film ID
-        MediaService.getFilm(id: filmID, completion: { (success, film) in
-            if success, let film = film {
-                self.film = film
-                
-                DispatchQueue.main.async {
-                    self.setBackgroundImage()
-                    self.detailTableView.reloadData()
-                    self.indicator.stopAnimating()
-                }
-            } else {
-                self.presentNoDataAlert(title: "Oops...", message: "No Data")
-            }
-            
-        })
+        if let id = filmID {
+            MediaService.getFilm(id: id, completion: { (success, film) in
+                       if success, let film = film {
+                           self.film = film
+                           
+                           DispatchQueue.main.async {
+                               self.setBackgroundImage()
+                               self.detailTableView.reloadData()
+                               self.indicator.stopAnimating()
+                           }
+                       } else {
+                           print("No Film")
+                       }
+                       
+                   })
+        }
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {

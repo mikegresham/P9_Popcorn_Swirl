@@ -16,12 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZaX-wJ-rMF">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZaX-wJ-rMF">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H0h-yZ-3gY">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H0h-yZ-3gY">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ar6-QQ-9xS">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -263,8 +262,12 @@
                         <constraints>
                             <constraint firstItem="B5D-wR-7Eo" firstAttribute="top" secondItem="TeT-DE-e1y" secondAttribute="top" id="7Oq-Xa-6RV"/>
                             <constraint firstAttribute="bottom" secondItem="ZaX-wJ-rMF" secondAttribute="bottom" id="EQr-O9-ySD"/>
+                            <constraint firstItem="H0h-yZ-3gY" firstAttribute="top" secondItem="TeT-DE-e1y" secondAttribute="top" id="KM2-bi-9Kk"/>
+                            <constraint firstAttribute="bottom" secondItem="H0h-yZ-3gY" secondAttribute="bottom" id="QZW-0y-Wow"/>
                             <constraint firstItem="B5D-wR-7Eo" firstAttribute="trailing" secondItem="ULu-Eb-bUi" secondAttribute="trailing" id="X3F-2l-zWw"/>
                             <constraint firstItem="ULu-Eb-bUi" firstAttribute="trailing" secondItem="ZaX-wJ-rMF" secondAttribute="trailing" id="am3-pG-BbX"/>
+                            <constraint firstItem="H0h-yZ-3gY" firstAttribute="trailing" secondItem="ULu-Eb-bUi" secondAttribute="trailing" id="asn-2n-x2a"/>
+                            <constraint firstItem="H0h-yZ-3gY" firstAttribute="leading" secondItem="ULu-Eb-bUi" secondAttribute="leading" id="e5W-C4-bhA"/>
                             <constraint firstItem="ZaX-wJ-rMF" firstAttribute="leading" secondItem="ULu-Eb-bUi" secondAttribute="leading" id="ifb-Vt-Ls4"/>
                             <constraint firstItem="B5D-wR-7Eo" firstAttribute="leading" secondItem="ULu-Eb-bUi" secondAttribute="leading" id="nFc-jj-H1C"/>
                             <constraint firstItem="B5D-wR-7Eo" firstAttribute="bottom" secondItem="ULu-Eb-bUi" secondAttribute="bottom" id="vno-2d-yYs"/>
@@ -531,10 +534,11 @@
             </objects>
             <point key="canvasLocation" x="554" y="1424"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Bookmarked-->
         <scene sceneID="iJ6-TK-loL">
             <objects>
                 <navigationController id="aPU-uf-Lmt" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Bookmarked" image="bookmark.fill" catalog="system" id="HhB-rj-Bk3"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="l71-De-a7n">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -547,19 +551,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QX5-hf-AWL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="554" y="721"/>
-        </scene>
-        <!--Bookmarked-->
-        <scene sceneID="u81-dM-YmL">
-            <objects>
-                <splitViewController interfaceStyle="dark" id="f9A-8t-tOQ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Bookmarked" image="bookmark.fill" catalog="system" id="FqF-q6-5ZL"/>
-                    <connections>
-                        <segue destination="aPU-uf-Lmt" kind="relationship" relationship="masterViewController" id="hKk-iF-pde"/>
-                    </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1kp-YN-vQe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="554" y="41"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="tAo-sv-KzM">
@@ -575,8 +566,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="DUa-Lg-Wi9" kind="relationship" relationship="viewControllers" id="wJb-hf-YpF"/>
-                        <segue destination="f9A-8t-tOQ" kind="relationship" relationship="viewControllers" id="e06-Nf-3Kz"/>
-                        <segue destination="MYE-gg-e3s" kind="relationship" relationship="viewControllers" id="Vqv-ZB-WpW"/>
+                        <segue destination="aPU-uf-Lmt" kind="relationship" relationship="viewControllers" id="4Hv-CT-nyz"/>
+                        <segue destination="g49-Qa-eu9" kind="relationship" relationship="viewControllers" id="4aF-kN-5HJ"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jh5-9j-pEs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -860,10 +851,11 @@
             </objects>
             <point key="canvasLocation" x="1578" y="1424"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Viewed-->
         <scene sceneID="paZ-Nq-9hL">
             <objects>
                 <navigationController id="g49-Qa-eu9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Viewed" image="eye.fill" catalog="system" id="r4Q-2V-qov"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="OXl-fl-F8e">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -877,22 +869,9 @@
             </objects>
             <point key="canvasLocation" x="1578" y="721"/>
         </scene>
-        <!--Viewed-->
-        <scene sceneID="0rd-Ew-L5L">
-            <objects>
-                <splitViewController id="MYE-gg-e3s" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Viewed" image="eye.fill" catalog="system" id="yEx-Bh-C6W"/>
-                    <connections>
-                        <segue destination="g49-Qa-eu9" kind="relationship" relationship="masterViewController" id="8NV-zU-xpY"/>
-                    </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HRN-1v-Yyd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1578" y="41"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="xMH-f9-nrL"/>
+        <segue reference="Y3w-ni-OX4"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark" catalog="system" width="112" height="128"/>

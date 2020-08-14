@@ -88,7 +88,8 @@ class DataManager {
     // MARK: Update
     
     func updateFilm(film: FilmBrief) {
-        if film.viewed != false || film.bookmark != false || film.notes != "" {
+        film.notes = film.notes == "" ? nil : film.notes
+        if film.viewed != false || film.bookmark != false || film.notes != nil {
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedFilm.entityName)
             request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedFilm.id), film.id as CVarArg)
              do {
@@ -124,16 +125,20 @@ class DataManager {
     // MARK: Delete
     
     func deleteFilm(for id: Int) {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedFilm.entityName)
-        request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedFilm.id), id as CVarArg)
-        request.returnsObjectsAsFaults = false
-        do {
-            let result = try context.fetch(request) as! [ManagedFilm]
-            context.delete(result.first!)
-        } catch {
-            print("Failed to delted film with id:\(id)")
+        if fetchFilm(id: id) != nil {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedFilm.entityName)
+                  request.predicate = NSPredicate(format: "%K == %i", #keyPath(ManagedFilm.id), id as CVarArg)
+                  request.returnsObjectsAsFaults = false
+                  do {
+                      let result = try context.fetch(request) as! [ManagedFilm]
+                      context.delete(result.first!)
+                  } catch {
+                      print("Failed to delted film with id:\(id)")
+                  }
+                  saveContext()
+        } else {
+            print("Film for id: \(id) does not exist")
         }
-        saveContext()
     }
     
     func saveContext() {
